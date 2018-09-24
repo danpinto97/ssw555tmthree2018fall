@@ -18,7 +18,6 @@ class Individual:
         self.gender = gender
 
     def setBirthday(self, birthday):
-        print(self.name)
         self.birthday = birthday
 
     def setAge(self, age):
