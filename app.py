@@ -160,7 +160,7 @@ with open("test_family.ged") as f:
 #i dont want to re-write this portion
 individual_table = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
-"""print("\n\n\n\nIndividuals: ")
+print("\n\n\n\nIndividuals: ")
 for indiv in indi_ids:
     indi = indis[indiv]
     children_temp = indi.getChild()
@@ -170,7 +170,7 @@ for indiv in indi_ids:
     individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(), str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str, spouses_temp_str]
     for i in range(0, len(individual_table)):
         print(individual_table[i] + ": " + individual_table_info[i])
-    print('\n')"""
+    print('\n')
 print("\n\n\nFamilies: ")
 for family_id in fam_ids:
     family = familes[family_id]
