@@ -25,7 +25,6 @@ current_id = ""
 with open("test_family.ged") as f:
     for line in f:
         line = line.strip('\n')
-        print(line)
         #dont work with empty lies
         if len(line.rstrip()) > 1:
             #comments not wanted
@@ -38,7 +37,6 @@ with open("test_family.ged") as f:
                     if(spl[2]=="INDI" or spl[2]=="FAM") and (spl[1] !="INDI" or spl[1]!="FAM"):
                         #if tag is INDI or FAM then all lines after will add to this class until another tag is found in
                         #which the previous class is stored
-                        current_id = spl[1]
                         if working:
                             if current:
                                 familes[current_id] = temp
@@ -48,6 +46,7 @@ with open("test_family.ged") as f:
                                 indis[current_id] = temp
                                 indi_ids.append(current_id)
                                 temp = None
+                        current_id = spl[1]
                         working = True
                         tag = spl[2]
                         if tag == "INDI":
@@ -127,7 +126,6 @@ with open("test_family.ged") as f:
                             date=spl[2] + "-" + spl[3] + "-" + spl[4]
                             dt = datetime.datetime(year=int(spl[4]), month=date_int[spl[3]], day=int(spl[2]))
                         if looking_date_birth:
-                            print("test")
                             temp.setBirthday(date)
                             age = calculate_age(dt)
                             temp.setAge(age)
@@ -162,7 +160,7 @@ with open("test_family.ged") as f:
 #i dont want to re-write this portion
 individual_table = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
-print("\n\n\n\nIndividuals: ")
+"""print("\n\n\n\nIndividuals: ")
 for indiv in indi_ids:
     indi = indis[indiv]
     children_temp = indi.getChild()
@@ -172,7 +170,7 @@ for indiv in indi_ids:
     individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(), str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str, spouses_temp_str]
     for i in range(0, len(individual_table)):
         print(individual_table[i] + ": " + individual_table_info[i])
-    print('\n')
+    print('\n')"""
 print("\n\n\nFamilies: ")
 for family_id in fam_ids:
     family = familes[family_id]
