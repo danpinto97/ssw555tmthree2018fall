@@ -1,8 +1,19 @@
 import datetime
-
+from pymongo import MongoClient
 from family import Family
 from individual import Individual
 #Calculate Age via birthdate
+
+def client():
+    """
+    Connects to the mongoDB client
+    """
+    client = MongoClient('localhost',27017)
+    return client.ged
+db = client()
+indis = db.indis
+fams = db.fams
+
 def calculate_age(birth_date):
     today = datetime.datetime.now()
     return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
@@ -55,7 +66,7 @@ with open("test_family.ged") as f:
                         else:
                             temp = Family(spl[1])
                             current = True
-                        
+
                     else: #get tag
                         tag=spl[1]
                 else: #get tag
@@ -168,7 +179,13 @@ for indiv in indi_ids:
     children_temp_str = ' '.join(children_temp)
     spouses_temp_str = ' '.join(spouses_temp)
     individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(), str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str, spouses_temp_str]
+    current_id = ''
     for i in range(0, len(individual_table)):
+        if individual_table[i] == "ID":
+            current_id = individual_table_info[i]
+            # db.indis.insert_one({'_id': current_id})
+            # continue
+        db.indis.find_one_and_update({"ID": current_id}, {individual_table[i]:individual_table_info[i]}, upsert= True)
         print(individual_table[i] + ": " + individual_table_info[i])
     print('\n')
 print("\n\n\nFamilies: ")
@@ -178,5 +195,6 @@ for family_id in fam_ids:
     child_str = ' '.join(children_temp)
     family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(), family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
     for i in range(0, len(family_table)):
+        db.fams.find_one_and_update({family_table[i]:family_table_info[i]})
         print(family_table[i] + ": " + family_table_info[i])
     print('\n')
