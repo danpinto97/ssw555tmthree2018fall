@@ -2,7 +2,16 @@ import datetime
 
 from family import Family
 from individual import Individual
-
+from pymongo import MongoClient
+def client():
+    """
+    Connects to the mongoDB client
+    """
+    client = MongoClient('localhost',27017)
+    return client.ged
+db = client()
+indis = db.indis
+fams = db.fams
 
 #Calculate Age via birthdate
 def calculate_age(birth_date):
@@ -74,7 +83,6 @@ def main():
     with open("test_family.ged") as f:
         for line in f:
             line = line.strip('\n')
-            print(line)
             #dont work with empty lies
             if len(line.rstrip()) > 1:
                 #comments not wanted
@@ -176,7 +184,6 @@ def main():
                                 date=spl[2] + "-" + spl[3] + "-" + spl[4]
                                 dt = datetime.datetime(year=int(spl[4]), month=date_int[spl[3]], day=int(spl[2]))
                             if looking_date_birth:
-                                print("test")
                                 temp.setBirthday(date)
                                 age = calculate_age(dt)
                                 temp.setAge(age)
@@ -212,38 +219,59 @@ def main():
     individual_table = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
     family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
     print("\n\n\n\nIndividuals: ")
-    for indiv in indi_ids:
-        indi = indis[indiv]
-        children_temp = indi.getChild()
-        spouses_temp = indi.getSpouse()
-        children_temp_str = ' '.join(children_temp)
-        spouses_temp_str = ' '.join(spouses_temp)
-        individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(), str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str, spouses_temp_str]
-        for i in range(0, len(individual_table)):
-            if(individual_table[i] == 'Birthday' or individual_table[i] == 'Death'):
-                if check_date_vs_datetimenow(individual_table_info[i]):
+    if db.indis.find_one() is None:
+        for indiv in indi_ids:
+            indi = indis[indiv]
+            children_temp = indi.getChild()
+            spouses_temp = indi.getSpouse()
+            children_temp_str = ' '.join(children_temp)
+            spouses_temp_str = ' '.join(spouses_temp)
+            individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(),
+                                     str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str,
+                                     spouses_temp_str]
+            current_id = ''
+            for i in range(0, len(individual_table)):
+                if individual_table[i] == "ID":
+                    # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
+                    current_id = individual_table_info[i]
                     print(individual_table[i] + ": " + individual_table_info[i])
-                else:
-                    print(individual_table[i]+ ": " + "ERROR: PAST CURRENT DATE")
-            else:
+                    db.indis.insert_one({"_id": current_id})
+                    continue
+                db.indis.find_one_and_update({"_id": current_id},
+                                             {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
+                # now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
+                # repeat with that ID
                 print(individual_table[i] + ": " + individual_table_info[i])
-        print('\n')
+            print('\n')
     print("\n\n\nFamilies: ")
-    for family_id in fam_ids:
-        family = familes[family_id]
-        children_temp = family.getChild()
-        child_str = ' '.join(children_temp)
-        family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(), family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
-        for i in range(0, len(family_table)):
-            if (family_table[i] == 'Married' or family_table[i] == 'Divorced'):
-                if check_date_vs_datetimenow(family_table_info[i]):
-                    #checks that date isn't past current date
+    if db.fams.find_one() is None:
+        for family_id in fam_ids:
+            family = familes[family_id]
+            children_temp = family.getChild()
+            child_str = ' '.join(children_temp)
+            family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(),
+                                 family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
+            current_id = ''
+            for i in range(0, len(family_table)):
+                if family_table[i] == "ID":
+                    current_id = family_table_info[i]
                     print(family_table[i] + ": " + family_table_info[i])
-                else:
-                    print(family_table[i] +': '+ 'ERROR: PAST CURRENT DATE')
-            else:
+                    db.fams.insert_one({"_id": current_id})
+                    continue
+
+                db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
+                                            upsert=True)
                 print(family_table[i] + ": " + family_table_info[i])
-        print('\n')
+            print('\n')
+
+    from US07 import us07_death
+
+    for item in db.indis.aggregate([
+        {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
+        {'$project' : {
+            'dates':{'birth':'$Birthday', 'death': '$Death'}}}
+    ]):
+        print(us07_death(item['dates']['birth'],item['dates']['death']))
 
 if __name__ == '__main__':
     main()
