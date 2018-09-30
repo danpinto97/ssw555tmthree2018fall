@@ -4,6 +4,7 @@ import unittest
 import us01
 
 current_date = datetime.datetime.now()
+print(current_date)
 class TestApp(unittest.TestCase):
 
     def test_year_plus_10(self):
@@ -15,7 +16,7 @@ class TestApp(unittest.TestCase):
     def test_tomorrow(self):
         tomorrow = current_date+ datetime.timedelta(days=1)
         #adding 1 day should return false as it is a future date
-        self.assertEqual(us01.check_date_vs_datetimenow(str(tomorrow.day)+'-'+current_date.strftime("%B").upper()[0:3]+'-'+str(current_date.year)), False)
+        self.assertEqual(us01.check_date_vs_datetimenow(str(tomorrow.day)+'-'+tomorrow.strftime("%B").upper()[0:3]+'-'+str(current_date.year)), False)
         return
 
     def test_today(self):
