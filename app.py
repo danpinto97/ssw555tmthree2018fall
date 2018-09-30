@@ -11,8 +11,7 @@ def client():
     client = MongoClient('localhost',27017)
     return client.ged
 db = client()
-indis = db.indis
-fams = db.fams
+
 
 def calculate_age(birth_date):
     today = datetime.datetime.now()
@@ -171,48 +170,42 @@ with open("test_family.ged") as f:
 #i dont want to re-write this portion
 individual_table = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
 family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
+
 print("\n\n\n\nIndividuals: ")
-
-
-#if the individuals database is empty we need to add to it, otherwise skip this portion. Same for family db.
-for indiv in indi_ids:
-    indi = indis[indiv]
-    children_temp = indi.getChild()
-    spouses_temp = indi.getSpouse()
-    children_temp_str = ' '.join(children_temp)
-    spouses_temp_str = ' '.join(spouses_temp)
-    individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(), str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str, spouses_temp_str]
-    current_id = ''
-    for i in range(0, len(individual_table)):
-        if individual_table[i] == "ID":
-            #if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
-            current_id = individual_table_info[i]
-            print(individual_table[i] + ": " + individual_table_info[i])
-            if db.indis.find_one() is None:
+if db.indis.find_one() is None:
+    #if the individuals database is empty we need to add to it, otherwise skip this portion. Same for family db.
+    for indiv in indi_ids:
+        indi = indis[indiv]
+        children_temp = indi.getChild()
+        spouses_temp = indi.getSpouse()
+        children_temp_str = ' '.join(children_temp)
+        spouses_temp_str = ' '.join(spouses_temp)
+        individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(), str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str, spouses_temp_str]
+        current_id = ''
+        for i in range(0, len(individual_table)):
+            if individual_table[i] == "ID":
+                #if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
+                current_id = individual_table_info[i]
                 db.indis.insert_one({"_id": current_id})
-            continue
-        if db.indis.find_one() is None:
+                continue
             db.indis.find_one_and_update({"_id": current_id}, {'$set':{individual_table[i]:individual_table_info[i]}}, upsert= True)
-        #now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
-        #repeat with that ID
-        print(individual_table[i] + ": " + individual_table_info[i])
-    print('\n')
+            #now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
+            #repeat with that ID
+            print(individual_table[i] + ": " + individual_table_info[i])
+        print('\n')
 print("\n\n\nFamilies: ")
-
-for family_id in fam_ids:
-    family = familes[family_id]
-    children_temp = family.getChild()
-    child_str = ' '.join(children_temp)
-    family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(), family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
-    current_id = ''
-    for i in range(0, len(family_table)):
-        if family_table[i] == "ID":
-            current_id = family_table_info[i]
-            print(family_table[i] + ": " + family_table_info[i])
-            if db.fams.find_one() is None:
+if db.fams.find_one() is None:
+    for family_id in fam_ids:
+        family = familes[family_id]
+        children_temp = family.getChild()
+        child_str = ' '.join(children_temp)
+        family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(), family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
+        current_id = ''
+        for i in range(0, len(family_table)):
+            if family_table[i] == "ID":
+                current_id = family_table_info[i]
                 db.fams.insert_one({"_id": current_id})
-            continue
-        if db.fams.find_one() is None:
+                continue
             db.fams.find_one_and_update({"_id": current_id}, {'$set':{family_table[i]:family_table_info[i]}}, upsert= True)
-        print(family_table[i] + ": " + family_table_info[i])
+            print(family_table[i] + ": " + family_table_info[i])
 print('\n')
