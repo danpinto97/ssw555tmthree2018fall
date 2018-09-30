@@ -1,5 +1,9 @@
 import unittest
 import app
+import user_stories
+
+db = app.client()
+
 class TestCalc(unittest.TestCase):
 
     def test_death_after_div(self):
@@ -102,7 +106,34 @@ class TestCalc(unittest.TestCase):
         fam = app.familes[fam_id]
         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
 
+class TestClass(unittest.TestCase):
+
+    def test_person1(self):
+        person1_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person1_id), True)
+        return
+
+    def test_person2(self):
+        person2_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person2_id), True)
+        return
+
+    def test_person3(self):
+        person3_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person3_id), True)
+        return
+
+    def test_person4(self):
+        person4_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person4_id), True)
+        return
+
+    def test_person5(self):
+        person5_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person5_id), True)
+        return
 
 
-
+if __name__ == '__main__':
+    unittest.main()
 
