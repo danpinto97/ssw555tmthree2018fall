@@ -271,7 +271,8 @@ def main():
         {'$project' : {
             'dates':{'birth':'$Birthday', 'death': '$Death'}}}
     ]):
-        print(us07_death(item['dates']['birth'],item['dates']['death']))
+        if us07_death(item['dates']['birth'],item['dates']['death']):
+            print('ERROR: Person older than 150 years!')
 
 if __name__ == '__main__':
     main()
