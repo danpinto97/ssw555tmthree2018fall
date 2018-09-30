@@ -189,9 +189,7 @@ def main():
                 if individual_table[i] == "ID":
                     # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
                     current_id = individual_table_info[i]
-                    db.indis.insert_one({"_id": current_id})
-                    print(individual_table[i] + ": " + individual_table_info[i])
-                    continue
+
                 db.indis.find_one_and_update({"_id": current_id},
                                              {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
                 # now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
@@ -210,9 +208,6 @@ def main():
             for i in range(0, len(family_table)):
                 if family_table[i] == "ID":
                     current_id = family_table_info[i]
-                    db.fams.insert_one({"_id": current_id})
-                    print(family_table[i] + ": " + family_table_info[i])
-                    continue
                 db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
                                             upsert=True)
                 print(family_table[i] + ": " + family_table_info[i])
