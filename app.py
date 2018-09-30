@@ -220,6 +220,7 @@ def main():
     family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
     print("\n\n\n\nIndividuals: ")
     if db.indis.find_one() is None:
+        # if the individuals database is empty we need to add to it, otherwise skip this portion. Same for family db.
         for indiv in indi_ids:
             indi = indis[indiv]
             children_temp = indi.getChild()
@@ -234,8 +235,8 @@ def main():
                 if individual_table[i] == "ID":
                     # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
                     current_id = individual_table_info[i]
-                    print(individual_table[i] + ": " + individual_table_info[i])
                     db.indis.insert_one({"_id": current_id})
+                    print(individual_table[i] + ": " + individual_table_info[i])
                     continue
                 db.indis.find_one_and_update({"_id": current_id},
                                              {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
@@ -255,16 +256,16 @@ def main():
             for i in range(0, len(family_table)):
                 if family_table[i] == "ID":
                     current_id = family_table_info[i]
-                    print(family_table[i] + ": " + family_table_info[i])
                     db.fams.insert_one({"_id": current_id})
+                    print(family_table[i] + ": " + family_table_info[i])
                     continue
-
                 db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
                                             upsert=True)
                 print(family_table[i] + ": " + family_table_info[i])
             print('\n')
 
     from US07 import us07_death
+    from us01 import check_date_vs_datetimenow
 
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
@@ -273,6 +274,16 @@ def main():
     ]):
         if us07_death(item['dates']['birth'],item['dates']['death']):
             print('ERROR: Person older than 150 years!')
+        if check_date_vs_datetimenow(item['dates']['birth']) == False or check_date_vs_datetimenow(item['dates']['death']) == False:
+            print('ERROR: Past current date!')
+
+    for item in db.fams.aggregate([
+        {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
+        {'$project': {
+            'dates': {'divorce': '$Married', 'marriage': '$Divorced'}}}
+    ]):
+        if check_date_vs_datetimenow(item['dates']['divorce']) == False or check_date_vs_datetimenow(item['dates']['marriage']) == False:
+            print('ERROR: Past current date!')
 
 if __name__ == '__main__':
     main()
