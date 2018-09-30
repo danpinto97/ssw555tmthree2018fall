@@ -277,7 +277,10 @@ def main():
             print('ERROR: Past current date!')
         if US36(item['dates']['death']):
             recent_survivor_ids.append(item['_id'])
-    print(recent_survivor_ids)
+
+    if len(recent_survivor_ids) > 0:
+        print('Recent survivor ids: ',recent_survivor_ids)
+
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
         {'$project': {
