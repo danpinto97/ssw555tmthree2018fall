@@ -25,6 +25,13 @@ def us07_death(birth, death):
     if eval(death[2]) - eval(birth[2]) > 150:
         #i.e. if 2011 - 1990 > 150
         return True
+    elif eval(death[2]) - eval(birth[2]) == 150:
+        #i.e. if 2011 - 1990 > 150
+        if date_int[death[1]] > date_int[birth[1]]:
+            return True
+        elif date_int[death[1]] == date_int[birth[1]]:
+            if death[0] > birth[0]:
+                return True
     return False
 
 '''
