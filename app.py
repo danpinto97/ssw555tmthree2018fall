@@ -266,7 +266,8 @@ def main():
 
     from US07 import us07_death
     from us01 import check_date_vs_datetimenow
-
+    from US36 import US36
+    recent_survivor_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
@@ -276,7 +277,9 @@ def main():
             print('ERROR: Person older than 150 years!')
         if check_date_vs_datetimenow(item['dates']['birth']) == False or check_date_vs_datetimenow(item['dates']['death']) == False:
             print('ERROR: Past current date!')
-
+        if US36(item['dates']['death']):
+            recent_survivor_ids.append(item['_id'])
+    print(recent_survivor_ids)
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
         {'$project': {
