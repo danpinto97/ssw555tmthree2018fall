@@ -264,18 +264,16 @@ def main():
                 print(family_table[i] + ": " + family_table_info[i])
             print('\n')
 
-    from US07 import us07_death
-    from us01 import check_date_vs_datetimenow
-    from US36 import US36
+    from user_stories import US36, US01, US07
     recent_survivor_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
             'dates':{'birth':'$Birthday', 'death': '$Death'}}}
     ]):
-        if us07_death(item['dates']['birth'],item['dates']['death']):
+        if US07(item['dates']['birth'],item['dates']['death']):
             print('ERROR: Person older than 150 years!')
-        if check_date_vs_datetimenow(item['dates']['birth']) == False or check_date_vs_datetimenow(item['dates']['death']) == False:
+        if US01(item['dates']['birth']) == False or US01(item['dates']['death']) == False:
             print('ERROR: Past current date!')
         if US36(item['dates']['death']):
             recent_survivor_ids.append(item['_id'])
@@ -285,7 +283,7 @@ def main():
         {'$project': {
             'dates': {'divorce': '$Married', 'marriage': '$Divorced'}}}
     ]):
-        if check_date_vs_datetimenow(item['dates']['divorce']) == False or check_date_vs_datetimenow(item['dates']['marriage']) == False:
+        if US01(item['dates']['divorce']) == False or US01(item['dates']['marriage']) == False:
             print('ERROR: Past current date!')
 
 if __name__ == '__main__':
