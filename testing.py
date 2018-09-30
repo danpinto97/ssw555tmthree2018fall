@@ -1,7 +1,5 @@
 import unittest
 import app
-
-
 # class TestCalc(unittest.TestCase):
 #
 #     def test_death_after_div(self):
@@ -10,7 +8,6 @@ import app
 #                 if date1 < date2:
 #                     return True
 #                 return False
-#
 #             if div == "N/A" or death == "N/A":
 #                 self.assertEqual(dateBefore(div, death), False)
 #             else:
@@ -31,7 +28,6 @@ import app
 #                 if date1 < date2:
 #                     return True
 #                 return False
-#
 #             if div == "N/A" or death == "N/A":
 #                 self.assertEqual(dateBefore(div, death), False)
 #             else:
@@ -52,7 +48,6 @@ import app
 #                 if date1 < date2:
 #                     return True
 #                 return False
-#
 #             if div == "N/A" or death == "N/A":
 #                 self.assertEqual(dateBefore(div, death), False)
 #             else:
@@ -73,7 +68,6 @@ import app
 #                 if date1 < date2:
 #                     return True
 #                 return False
-#
 #             if div == "N/A" or death == "N/A":
 #                 self.assertEqual(dateBefore(div, death), False)
 #             else:
@@ -94,7 +88,6 @@ import app
 #                 if date1 < date2:
 #                     return True
 #                 return False
-#
 #             if div == "N/A" or death == "N/A":
 #                 self.assertEqual(dateBefore(div, death), False)
 #             else:
@@ -108,7 +101,7 @@ import app
 #         fam_id = fam_id[0]
 #         fam = app.familes[fam_id]
 #         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
-#
+
 import datetime
 from user_stories import US01, US36, US07
 current_date = datetime.datetime.now()
@@ -172,6 +165,32 @@ class TestUS07(unittest.TestCase):
         self.assertEqual(US07('5-MAR-1700', '5-FEB-1850'), False)
         return
 
+class TestUS11(unittest.TestCase):
+
+    def test_person1(self):
+        person1_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person1_id), True)
+        return
+
+    def test_person2(self):
+        person2_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person2_id), True)
+        return
+
+    def test_person3(self):
+        person3_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person3_id), True)
+        return
+
+    def test_person4(self):
+        person4_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person4_id), True)
+        return
+
+    def test_person5(self):
+        person5_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US_11(person5_id), True)
+        return
 
 class TestUS36(unittest.TestCase):
 
@@ -202,3 +221,5 @@ class TestUS36(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
