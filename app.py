@@ -35,7 +35,7 @@ def main():
     looking_date_div = False
     current_id = ""
     #read file one line at a time from file in open(...)
-    with open("My-Family.ged") as f:
+    with open("test_family.ged") as f:
         for line in f:
             line = line.strip('\n')
             #dont work with empty lies

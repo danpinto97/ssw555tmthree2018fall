@@ -118,3 +118,106 @@ def US36(death):
     if today - datetime.timedelta(days=30) <= death:
         return True
     return False
+
+def US13(birth, death):
+    '''
+    This function checks for birth before death
+    Args:
+        birth: date taken in as datetime to be tested.
+        death: date taken in as datetime to be tested.
+    Returns:
+        True/False: True if the birth comes before the death date, False if not.
+    '''
+    if birth is None:
+        return False
+    if death is None:
+        return False
+    if birth < death:
+        return True
+    return False
+
+def US15(birth, marriage):
+    '''
+    This function checks for birth before marriage
+    Args:
+        birth: date taken in as datetime to be tested.
+        marriage: date taken in as datetime to be tested.
+    Returns:
+        True/False: True if the birth comes before the marriage date, False if not.
+    '''
+    if birth is None:
+        return False
+    if marriage is None:
+        return False
+    if birth < marriage:
+        return True
+    return False
+
+def US06(div, death1, death2):
+    '''
+    This function checks for divorce before deaths of both spouses
+    Args:
+        div: Divorce date
+        death1: death date
+        death2: partner death date
+    Returns:
+        True/False: True if the divorce comes before death, False if not.
+    '''
+    if div is None:
+        return False
+    if death1 is None:
+        return False
+    if death2 is None:
+        return False
+    if div < death1 and div < death2:
+        return True
+    return False
+
+from app import client
+db = client()
+
+def US11(indi_id):
+    indi = db.indis.find_one({"_id": indi_id})
+    spouse_list = indi["Spouse"].split()
+    if len(spouse_list) <= 1:
+        return True
+    for marr in spouse_list:
+        marr_indi = db.indis.find_one({"_id": marr})
+        marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : marr}, {"Husband ID": indi_id}]}]})
+        for other_marr in spouse_list:
+            if other_marr == marr:
+                continue
+            other_marr_indi = db.indis.find_one({"_id": other_marr})
+            other_marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : other_marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : other_marr}, {"Husband ID": indi_id}]}]})
+            if get_dt_obj(other_marr_fam["Married"]) < get_dt_obj(marr_fam["Married"]):
+                if other_marr_fam["Divorced"]:
+                    if get_dt_obj(other_marr_fam["Divorced"]) > get_dt_obj(marr_fam["Married"]):
+                        return False
+                elif other_marr_indi["death"] != "N/A":
+                    if get_dt_obj(other_marr_indi["death"]) > get_dt_obj(marr_fam["Married"]):
+                        return False
+                else:
+                    return False
+            elif get_dt_obj(other_marr_fam["Married"]) > get_dt_obj(marr_fam["Married"]):
+                if marr_fam["Divorced"]:
+                    if get_dt_obj(marr_fam["Divorced"]) > get_dt_obj(other_marr_fam["Married"]):
+                        return False
+                elif marr_indi["death"] != "N/A":
+                    if get_dt_obj(marr_indi["death"]) > get_dt_obj(other_marr_fam["Married"]):
+                        return False
+                else:
+                    return False
+    return True
+
+def US37(recent_dead_id):
+    dead_indi = db.indis.find_one({"_id": recent_dead_id})
+    survivors = []
+    spouse_list = dead_indi["Spouse"].split()
+    child_list = dead_indi["Child"].split()
+    if len(spouse_list) > 0:
+        for spouse in spouse_list:
+            survivors.append(spouse)
+    if len(child_list) > 0:
+        for child in child_list:
+            survivors.append(child)
+    return survivors
