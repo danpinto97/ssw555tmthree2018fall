@@ -118,3 +118,37 @@ def US36(death):
     if today - datetime.timedelta(days=30) <= death:
         return True
     return False
+
+def US13(birth, death):
+    '''
+    This function checks for birth before death
+    Args:
+        birth: date taken in as datetime to be tested.
+        death: date taken in as datetime to be tested.
+    Returns:
+        True/False: True if the birth comes before the death date, False if not.
+    '''
+    if birth is None:
+        return False
+    if death is None:
+        return False
+    if birth < date:
+        return True
+    return False
+
+def US15(birth, marriage):
+    '''
+    This function checks for birth before marriage
+    Args:
+        birth: date taken in as datetime to be tested.
+        marriage: date taken in as datetime to be tested.
+    Returns:
+        True/False: True if the birth comes before the marriage date, False if not.
+    '''
+    if birth is None:
+        return False
+    if marriage is None:
+        return False
+    if birth < marriage:
+        return True
+    return False
