@@ -110,7 +110,7 @@ import app
 #         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
 #
 import datetime
-from user_stories import US01, US36, US07
+from user_stories import US01, US36, US07, US13, US15, US06
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):

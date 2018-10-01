@@ -132,7 +132,7 @@ def US13(birth, death):
         return False
     if death is None:
         return False
-    if birth < date:
+    if birth < death:
         return True
     return False
 
