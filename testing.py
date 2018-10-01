@@ -247,6 +247,31 @@ class TestUS15(unittest.TestCase):
         self.assertEqual(US15(marriage, birth), False)
         return
 
+class TestUS06(unittest.TestCase):
+    def test_nones(self):
+        self.assertEqual(US06(None, None, None), False)
+        return
+    def test_some_nones(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US06(None, None, test), False)
+        return
+    def test_more_nones(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US06(None, test, None), False)
+        return
+    def test_proper(self):
+        div = datetime.datetime(1920, 8, 4, 0, 0)
+        death1 = datetime.datetime(2001, 9, 15, 0, 0)
+        death2 = datetime.datetime(2001, 9, 17, 0, 0)
+        self.assertEqual(US06(div, death1, death2), True)
+        return
+    def test_improper(self):
+        div = datetime.datetime(1920, 8, 4, 0, 0)
+        death1 = datetime.datetime(2001, 9, 15, 0, 0)
+        death2 = datetime.datetime(2001, 9, 17, 0, 0)
+        self.assertEqual(US06(death1, div, death2), False)
+        return
+
 
 
 

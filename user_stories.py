@@ -152,3 +152,23 @@ def US15(birth, marriage):
     if birth < marriage:
         return True
     return False
+
+def US06(div, death1, death2):
+    '''
+    This function checks for divorce before deaths of both spouses
+    Args:
+        div: Divorce date
+        death1: death date
+        death2: partner death date
+    Returns:
+        True/False: True if the divorce comes before death, False if not.
+    '''
+    if div is None:
+        return False
+    if death1 is None:
+        return False
+    if death2 is None:
+        return False
+    if div < death1 and div < death2:
+        return True
+    return False
