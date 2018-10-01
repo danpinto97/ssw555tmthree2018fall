@@ -1,5 +1,8 @@
 import unittest
 import app
+import user_stories
+
+db = app.client()
 # class TestCalc(unittest.TestCase):
 #
 #     def test_death_after_div(self):
@@ -103,7 +106,7 @@ import app
 #         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
 
 import datetime
-from user_stories import US01, US36, US07
+from user_stories import US01, US36, US07, US37
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):
@@ -169,27 +172,27 @@ class TestUS11(unittest.TestCase):
 
     def test_person1(self):
         person1_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US_11(person1_id), True)
+        self.assertEqual(user_stories.US11(person1_id), True)
         return
 
     def test_person2(self):
         person2_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US_11(person2_id), True)
+        self.assertEqual(user_stories.US11(person2_id), True)
         return
 
     def test_person3(self):
         person3_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US_11(person3_id), True)
+        self.assertEqual(user_stories.US11(person3_id), True)
         return
 
     def test_person4(self):
         person4_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US_11(person4_id), True)
+        self.assertEqual(user_stories.US11(person4_id), True)
         return
 
     def test_person5(self):
         person5_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US_11(person5_id), True)
+        self.assertEqual(user_stories.US11(person5_id), True)
         return
 
 class TestUS36(unittest.TestCase):
@@ -217,6 +220,84 @@ class TestUS36(unittest.TestCase):
     def test_today(self):
         self.assertEqual(US36(current_date), True)
         return
+
+class TestUS37(unittest.TestCase):
+
+    def test_person1(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081764934924@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081764934924@"), test_survivors)
+        return
+
+    def test_person2(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081764947910@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081764947910@"), test_survivors)
+        return
+
+    def test_person3(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081765016854@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081765016854@"), test_survivors)
+        return
+
+    def test_person4(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081764012539@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081764012539@"), test_survivors)
+        return
+
+    def test_person5(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081765037935@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081765037935@"), test_survivors)
+        return
+
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 import datetime
-<<<<<<< HEAD
+
 
 def get_dt_obj(string_date):
     """
@@ -119,22 +119,25 @@ def US36(death):
     if today - datetime.timedelta(days=30) <= death:
         return True
     return False
-=======
-from app import get_dt_obj
+
+
 from app import client
 
 db = client()
 
 
-def US_11(indi_id):
+def US11(indi_id):
     indi = db.indis.find_one({"_id": indi_id})
-    if len(indi["Spouse"]) <= 1:
+    spouse_list = indi["Spouse"].split()
+    if len(spouse_list) <= 1:
         return True
-    for marr in indi["Spouse"].items():
+    for marr in spouse_list:
         marr_indi = db.indis.find_one({"_id": marr})
         marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : marr}, {"Husband ID": indi_id}]}]})
-        for other_marr in indi["Spouse"].items():
-            other_marr_indi = db.indis.find_one({"_id": other_mar})
+        for other_marr in spouse_list:
+            if other_marr == marr:
+                continue
+            other_marr_indi = db.indis.find_one({"_id": other_marr})
             other_marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : other_marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : other_marr}, {"Husband ID": indi_id}]}]})
             if get_dt_obj(other_marr_fam["Married"]) < get_dt_obj(marr_fam["Married"]):
                 if other_marr_fam["Divorced"]:
@@ -156,4 +159,16 @@ def US_11(indi_id):
                     return False
     return True
 
->>>>>>> Reformated to match master
+def US37(recent_dead_id):
+    dead_indi = db.indis.find_one({"_id": recent_dead_id})
+    survivors = []
+    spouse_list = dead_indi["Spouse"].split()
+    child_list = dead_indi["Child"].split()
+    if len(spouse_list) > 0:
+        for spouse in spouse_list:
+            survivors.append(spouse)
+    if len(child_list) > 0:
+        for child in child_list:
+            survivors.append(child)
+    return survivors
+
