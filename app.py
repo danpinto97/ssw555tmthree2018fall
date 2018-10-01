@@ -34,7 +34,7 @@ def main():
     looking_date_div = False
     current_id = ""
     #read file one line at a time from file in open(...)
-    with open("test_family.ged") as f:
+    with open("My-Family.ged") as f:
         for line in f:
             line = line.strip('\n')
             #dont work with empty lies
@@ -49,7 +49,7 @@ def main():
                         if(spl[2]=="INDI" or spl[2]=="FAM") and (spl[1] !="INDI" or spl[1]!="FAM"):
                             #if tag is INDI or FAM then all lines after will add to this class until another tag is found in
                             #which the previous class is stored
-                            current_id = spl[1]
+
                             if working:
                                 if current:
                                     familes[current_id] = temp
@@ -59,6 +59,7 @@ def main():
                                     indis[current_id] = temp
                                     indi_ids.append(current_id)
                                     temp = None
+                            current_id = spl[1]
                             working = True
                             tag = spl[2]
                             if tag == "INDI":
