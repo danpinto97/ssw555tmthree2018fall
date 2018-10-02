@@ -1,116 +1,12 @@
 import unittest
 import app
-
-
-# class TestCalc(unittest.TestCase):
-#
-#     def test_death_after_div(self):
-#         def deathAfterDivoce(div, death):
-#             def dateBefore(date1, date2):
-#                 if date1 < date2:
-#                     return True
-#                 return False
-#
-#             if div == "N/A" or death == "N/A":
-#                 self.assertEqual(dateBefore(div, death), False)
-#             else:
-#                 self.assertEqual(dateBefore(div, death), True)
-#
-#         indiv = app.indi_ids[0]
-#         indi = app.indis[indiv]
-#         fam_id = indi.getChild()
-#         if len(fam_id) < 1:
-#             fam_id = indi.getSpouse()
-#         fam_id = fam_id[0]
-#         fam = app.familes[fam_id]
-#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
-#
-#     def test_death_after_div_2(self):
-#         def deathAfterDivoce(div, death):
-#             def dateBefore(date1, date2):
-#                 if date1 < date2:
-#                     return True
-#                 return False
-#
-#             if div == "N/A" or death == "N/A":
-#                 self.assertEqual(dateBefore(div, death), False)
-#             else:
-#                 self.assertEqual(dateBefore(div, death), True)
-#
-#         indiv = app.indi_ids[1]
-#         indi = app.indis[indiv]
-#         fam_id = indi.getChild()
-#         if len(fam_id) < 1:
-#             fam_id = indi.getSpouse()
-#         fam_id = fam_id[0]
-#         fam = app.familes[fam_id]
-#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
-#
-#     def test_death_after_div_3(self):
-#         def deathAfterDivoce(div, death):
-#             def dateBefore(date1, date2):
-#                 if date1 < date2:
-#                     return True
-#                 return False
-#
-#             if div == "N/A" or death == "N/A":
-#                 self.assertEqual(dateBefore(div, death), False)
-#             else:
-#                 self.assertEqual(dateBefore(div, death), True)
-#
-#         indiv = app.indi_ids[2]
-#         indi = app.indis[indiv]
-#         fam_id = indi.getChild()
-#         if len(fam_id) < 1:
-#             fam_id = indi.getSpouse()
-#         fam_id = fam_id[0]
-#         fam = app.familes[fam_id]
-#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
-#
-#     def test_death_after_div_4(self):
-#         def deathAfterDivoce(div, death):
-#             def dateBefore(date1, date2):
-#                 if date1 < date2:
-#                     return True
-#                 return False
-#
-#             if div == "N/A" or death == "N/A":
-#                 self.assertEqual(dateBefore(div, death), False)
-#             else:
-#                 self.assertEqual(dateBefore(div, death), True)
-#
-#         indiv = app.indi_ids[3]
-#         indi = app.indis[indiv]
-#         fam_id = indi.getChild()
-#         if len(fam_id) < 1:
-#             fam_id = indi.getSpouse()
-#         fam_id = fam_id[0]
-#         fam = app.familes[fam_id]
-#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
-#
-#     def test_death_after_div_5(self):
-#         def deathAfterDivoce(div, death):
-#             def dateBefore(date1, date2):
-#                 if date1 < date2:
-#                     return True
-#                 return False
-#
-#             if div == "N/A" or death == "N/A":
-#                 self.assertEqual(dateBefore(div, death), False)
-#             else:
-#                 self.assertEqual(dateBefore(div, death), True)
-#
-#         indiv = app.indi_ids[4]
-#         indi = app.indis[indiv]
-#         fam_id = indi.getChild()
-#         if len(fam_id) < 1:
-#             fam_id = indi.getSpouse()
-#         fam_id = fam_id[0]
-#         fam = app.familes[fam_id]
-#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
-#
+db = app.client()
 import datetime
+<<<<<<< HEAD
 from user_stories import US01, US36, US07, US13, US15, US06
+=======
+from user_stories import US01, US36, US07, US13, US15, US06, US37
+>>>>>>> e5c353e8ceffde0fdd69eca89707406a56d63965
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):
@@ -273,7 +169,86 @@ class TestUS06(unittest.TestCase):
         return
 
 
+<<<<<<< HEAD
 
+=======
+class TestUS37(unittest.TestCase):
+
+    def test_person1(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081764934924@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081764934924@"), test_survivors)
+        return
+
+    def test_person2(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081764947910@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081764947910@"), test_survivors)
+        return
+
+    def test_person3(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081765016854@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081765016854@"), test_survivors)
+        return
+
+    def test_person4(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081764012539@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081764012539@"), test_survivors)
+        return
+
+    def test_person5(self):
+        dead_indi = db.indis.find_one({"_id": "@I6000000081765037935@"})
+        test_survivors = []
+        spouse_list = dead_indi["Spouse"].split()
+        child_list = dead_indi["Child"].split()
+        if len(spouse_list) > 0:
+            for spouse in spouse_list:
+                test_survivors.append(spouse)
+        if len(child_list) > 0:
+            for child in child_list:
+                test_survivors.append(child)
+
+        self.assertEqual(US37("@I6000000081765037935@"), test_survivors)
+        return
+>>>>>>> e5c353e8ceffde0fdd69eca89707406a56d63965
 
 if __name__ == '__main__':
     unittest.main()
