@@ -54,6 +54,7 @@ def US01(date):
         else:
             return False
 
+
 def US07(birth, death):
     '''
     This function checks if a person has been alive for more than 150 years. It does so by comparing the birth and death
@@ -125,6 +126,40 @@ from app import client
 
 db = client()
 
+def US04(family_id):
+    """
+    Marriage before divorce
+    :param family_id:
+    :return: True if marriage happened before divorce. False if not
+    """
+    family = db.fams.find_one({'_id': family_id})
+    if family['Married'] == "":
+        return True
+    elif family['Divorced'] == 'N/A':
+        return True
+    elif get_dt_obj(family['Married']) < get_dt_obj(family['Divorced']):
+        return True
+    else:
+        return False
+
+def US05(family_id):
+    """
+    Marriage before Death
+    :param family_id:
+    :return: True if marriage happened before death of either spouse. False if not
+    """
+    family = db.fams.find_one({'_id': family_id})
+    if family['Married'] == "":
+        return True
+    husband = db.fams.find_one({'_id': family['Husband ID']})
+    wife = db.fams.find_one({'_id': family['Wife ID']})
+    if husband['Death'] != 'N/A':
+        if get_dt_obj(husband['Death']) < get_dt_obj(family['Married']):
+            return False
+    if family['Wife ID'] != 'N/A':
+        if get_dt_obj(wife['Death']) < get_dt_obj(family['Married']):
+            return False
+    return True
 
 def US11(indi_id):
     indi = db.indis.find_one({"_id": indi_id})
