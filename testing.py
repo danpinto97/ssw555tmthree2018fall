@@ -1,8 +1,115 @@
 import unittest
 import app
+
+import user_stories
+
 db = app.client()
+# class TestCalc(unittest.TestCase):
+#
+#     def test_death_after_div(self):
+#         def deathAfterDivoce(div, death):
+#             def dateBefore(date1, date2):
+#                 if date1 < date2:
+#                     return True
+#                 return False
+#             if div == "N/A" or death == "N/A":
+#                 self.assertEqual(dateBefore(div, death), False)
+#             else:
+#                 self.assertEqual(dateBefore(div, death), True)
+#
+#         indiv = app.indi_ids[0]
+#         indi = app.indis[indiv]
+#         fam_id = indi.getChild()
+#         if len(fam_id) < 1:
+#             fam_id = indi.getSpouse()
+#         fam_id = fam_id[0]
+#         fam = app.familes[fam_id]
+#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
+#
+#     def test_death_after_div_2(self):
+#         def deathAfterDivoce(div, death):
+#             def dateBefore(date1, date2):
+#                 if date1 < date2:
+#                     return True
+#                 return False
+#             if div == "N/A" or death == "N/A":
+#                 self.assertEqual(dateBefore(div, death), False)
+#             else:
+#                 self.assertEqual(dateBefore(div, death), True)
+#
+#         indiv = app.indi_ids[1]
+#         indi = app.indis[indiv]
+#         fam_id = indi.getChild()
+#         if len(fam_id) < 1:
+#             fam_id = indi.getSpouse()
+#         fam_id = fam_id[0]
+#         fam = app.familes[fam_id]
+#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
+#
+#     def test_death_after_div_3(self):
+#         def deathAfterDivoce(div, death):
+#             def dateBefore(date1, date2):
+#                 if date1 < date2:
+#                     return True
+#                 return False
+#             if div == "N/A" or death == "N/A":
+#                 self.assertEqual(dateBefore(div, death), False)
+#             else:
+#                 self.assertEqual(dateBefore(div, death), True)
+#
+#         indiv = app.indi_ids[2]
+#         indi = app.indis[indiv]
+#         fam_id = indi.getChild()
+#         if len(fam_id) < 1:
+#             fam_id = indi.getSpouse()
+#         fam_id = fam_id[0]
+#         fam = app.familes[fam_id]
+#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
+#
+#     def test_death_after_div_4(self):
+#         def deathAfterDivoce(div, death):
+#             def dateBefore(date1, date2):
+#                 if date1 < date2:
+#                     return True
+#                 return False
+#             if div == "N/A" or death == "N/A":
+#                 self.assertEqual(dateBefore(div, death), False)
+#             else:
+#                 self.assertEqual(dateBefore(div, death), True)
+#
+#         indiv = app.indi_ids[3]
+#         indi = app.indis[indiv]
+#         fam_id = indi.getChild()
+#         if len(fam_id) < 1:
+#             fam_id = indi.getSpouse()
+#         fam_id = fam_id[0]
+#         fam = app.familes[fam_id]
+#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
+#
+#     def test_death_after_div_5(self):
+#         def deathAfterDivoce(div, death):
+#             def dateBefore(date1, date2):
+#                 if date1 < date2:
+#                     return True
+#                 return False
+#             if div == "N/A" or death == "N/A":
+#                 self.assertEqual(dateBefore(div, death), False)
+#             else:
+#                 self.assertEqual(dateBefore(div, death), True)
+#
+#         indiv = app.indi_ids[4]
+#         indi = app.indis[indiv]
+#         fam_id = indi.getChild()
+#         if len(fam_id) < 1:
+#             fam_id = indi.getSpouse()
+#         fam_id = fam_id[0]
+#         fam = app.familes[fam_id]
+#         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
+
+
 import datetime
 from user_stories import US01, US36, US07, US13, US15, US06, US37
+
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):
@@ -64,6 +171,32 @@ class TestUS07(unittest.TestCase):
         self.assertEqual(US07('5-MAR-1700', '5-FEB-1850'), False)
         return
 
+class TestUS11(unittest.TestCase):
+
+    def test_person1(self):
+        person1_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person1_id), True)
+        return
+
+    def test_person2(self):
+        person2_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person2_id), True)
+        return
+
+    def test_person3(self):
+        person3_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person3_id), True)
+        return
+
+    def test_person4(self):
+        person4_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person4_id), True)
+        return
+
+    def test_person5(self):
+        person5_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person5_id), True)
+        return
 
 class TestUS36(unittest.TestCase):
 
@@ -90,6 +223,7 @@ class TestUS36(unittest.TestCase):
     def test_today(self):
         self.assertEqual(US36(current_date), True)
         return
+
 
 class TestUS13(unittest.TestCase):
     def test_two_unknowns(self):
@@ -163,6 +297,7 @@ class TestUS06(unittest.TestCase):
         death2 = datetime.datetime(2001, 9, 17, 0, 0)
         self.assertEqual(US06(death1, div, death2), False)
         return
+
 
 
 class TestUS37(unittest.TestCase):
@@ -244,3 +379,5 @@ class TestUS37(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+

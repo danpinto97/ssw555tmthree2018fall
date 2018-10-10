@@ -1,5 +1,6 @@
 import datetime
 
+
 def get_dt_obj(string_date):
     """
     get the datetime object of a date string
@@ -52,6 +53,7 @@ def US01(date):
                 return True
         else:
             return False
+
 
 def US07(birth, death):
     '''
@@ -119,6 +121,47 @@ def US36(death):
         return True
     return False
 
+
+
+from app import client
+
+db = client()
+
+def US04(family_id):
+    """
+    Marriage before divorce
+    :param family_id:
+    :return: True if marriage happened before divorce. False if not
+    """
+    family = db.fams.find_one({'_id': family_id})
+    if family['Married'] == "":
+        return True
+    elif family['Divorced'] == 'N/A':
+        return True
+    elif get_dt_obj(family['Married']) < get_dt_obj(family['Divorced']):
+        return True
+    else:
+        return False
+
+def US05(family_id):
+    """
+    Marriage before Death
+    :param family_id:
+    :return: True if marriage happened before death of either spouse. False if not
+    """
+    family = db.fams.find_one({'_id': family_id})
+    if family['Married'] == "":
+        return True
+    husband = db.fams.find_one({'_id': family['Husband ID']})
+    wife = db.fams.find_one({'_id': family['Wife ID']})
+    if husband['Death'] != 'N/A':
+        if get_dt_obj(husband['Death']) < get_dt_obj(family['Married']):
+            return False
+    if family['Wife ID'] != 'N/A':
+        if get_dt_obj(wife['Death']) < get_dt_obj(family['Married']):
+            return False
+    return True
+
 def US13(birth, death):
     '''
     This function checks for birth before death
@@ -173,8 +216,6 @@ def US06(div, death1, death2):
         return True
     return False
 
-from app import client
-db = client()
 
 def US11(indi_id):
     indi = db.indis.find_one({"_id": indi_id})
@@ -220,4 +261,5 @@ def US37(recent_dead_id):
     if len(child_list) > 0:
         for child in child_list:
             survivors.append(child)
+
     return survivors
