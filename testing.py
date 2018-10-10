@@ -1,5 +1,6 @@
 import unittest
 import app
+
 import user_stories
 
 db = app.client()
@@ -105,8 +106,10 @@ db = app.client()
 #         fam = app.familes[fam_id]
 #         deathAfterDivoce(fam.getDivorced(), indi.getDeath())
 
+
 import datetime
-from user_stories import US01, US36, US07, US37
+from user_stories import US01, US36, US07, US13, US15, US06, US37
+
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):
@@ -221,6 +224,82 @@ class TestUS36(unittest.TestCase):
         self.assertEqual(US36(current_date), True)
         return
 
+
+class TestUS13(unittest.TestCase):
+    def test_two_unknowns(self):
+        self.assertEqual(US13(None, None), False)
+        return
+    def test_left_unk(self):
+        #15 Sept 2001
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US13(None, test), False)
+        return
+    def test_right_unk(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US13(test, None), False)
+        return
+    def test_proper(self):
+        birth = datetime.datetime(1920, 8, 4, 0, 0)
+        marriage = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US13(birth, marriage), True)
+        return
+    def test_reversed(self):
+        birth = datetime.datetime(1920, 8, 4, 0, 0)
+        marriage = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US13(marriage, birth), False)
+        return
+
+class TestUS15(unittest.TestCase):
+    def test_two_unknowns(self):
+        self.assertEqual(US15(None, None), False)
+        return
+    def test_left_unk(self):
+        #15 Sept 2001
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US15(None, test), False)
+        return
+    def test_right_unk(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US15(test, None), False)
+        return
+    def test_proper(self):
+        birth = datetime.datetime(1920, 8, 4, 0, 0)
+        marriage = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US15(birth, marriage), True)
+        return
+    def test_reversed(self):
+        birth = datetime.datetime(1920, 8, 4, 0, 0)
+        marriage = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US15(marriage, birth), False)
+        return
+
+class TestUS06(unittest.TestCase):
+    def test_nones(self):
+        self.assertEqual(US06(None, None, None), False)
+        return
+    def test_some_nones(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US06(None, None, test), False)
+        return
+    def test_more_nones(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US06(None, test, None), False)
+        return
+    def test_proper(self):
+        div = datetime.datetime(1920, 8, 4, 0, 0)
+        death1 = datetime.datetime(2001, 9, 15, 0, 0)
+        death2 = datetime.datetime(2001, 9, 17, 0, 0)
+        self.assertEqual(US06(div, death1, death2), True)
+        return
+    def test_improper(self):
+        div = datetime.datetime(1920, 8, 4, 0, 0)
+        death1 = datetime.datetime(2001, 9, 15, 0, 0)
+        death2 = datetime.datetime(2001, 9, 17, 0, 0)
+        self.assertEqual(US06(death1, div, death2), False)
+        return
+
+
+
 class TestUS37(unittest.TestCase):
 
     def test_person1(self):
@@ -297,8 +376,6 @@ class TestUS37(unittest.TestCase):
 
         self.assertEqual(US37("@I6000000081765037935@"), test_survivors)
         return
-
-
 
 if __name__ == '__main__':
     unittest.main()

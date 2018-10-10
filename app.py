@@ -3,6 +3,7 @@ import datetime
 from family import Family
 from individual import Individual
 from pymongo import MongoClient
+from prettytable import PrettyTable
 def client():
     """
     Connects to the mongoDB client
@@ -49,7 +50,7 @@ def main():
                         if(spl[2]=="INDI" or spl[2]=="FAM") and (spl[1] !="INDI" or spl[1]!="FAM"):
                             #if tag is INDI or FAM then all lines after will add to this class until another tag is found in
                             #which the previous class is stored
-                            current_id = spl[1]
+
                             if working:
                                 if current:
                                     familes[current_id] = temp
@@ -59,6 +60,7 @@ def main():
                                     indis[current_id] = temp
                                     indi_ids.append(current_id)
                                     temp = None
+                            current_id = spl[1]
                             working = True
                             tag = spl[2]
                             if tag == "INDI":
@@ -172,46 +174,55 @@ def main():
     #i dont want to re-write this portion
     individual_table = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
     family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
-    print("\n\n\n\nIndividuals: ")
-    if db.indis.find_one() is None:
-        # if the individuals database is empty we need to add to it, otherwise skip this portion. Same for family db.
-        for indiv in indi_ids:
-            indi = indis[indiv]
-            children_temp = indi.getChild()
-            spouses_temp = indi.getSpouse()
-            children_temp_str = ' '.join(children_temp)
-            spouses_temp_str = ' '.join(spouses_temp)
-            individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(),
-                                     str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str,
-                                     spouses_temp_str]
-            current_id = ''
-            for i in range(0, len(individual_table)):
-                if individual_table[i] == "ID":
-                    # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
-                    current_id = individual_table_info[i]
+    indi_ptable = PrettyTable(individual_table)
+    print("Individuals: ")
 
-                db.indis.find_one_and_update({"_id": current_id},
-                                             {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
-                # now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
-                # repeat with that ID
-                print(individual_table[i] + ": " + individual_table_info[i])
-            print('\n')
-    print("\n\n\nFamilies: ")
-    if db.fams.find_one() is None:
-        for family_id in fam_ids:
-            family = familes[family_id]
-            children_temp = family.getChild()
-            child_str = ' '.join(children_temp)
-            family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(),
-                                 family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
-            current_id = ''
-            for i in range(0, len(family_table)):
-                if family_table[i] == "ID":
-                    current_id = family_table_info[i]
-                db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
-                                            upsert=True)
-                print(family_table[i] + ": " + family_table_info[i])
-            print('\n')
+    for indiv in indi_ids:
+        indi = indis[indiv]
+        children_temp = indi.getChild()
+        spouses_temp = indi.getSpouse()
+        children_temp_str = ' '.join(children_temp)
+        spouses_temp_str = ' '.join(spouses_temp)
+        individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(),
+                                 str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str,
+                                 spouses_temp_str]
+        current_id = ''
+        current_list_for_ptable= []
+        for i in range(0, len(individual_table)):
+            if individual_table[i] == "ID":
+                current_id = individual_table_info[i]
+                # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
+            db.indis.find_one_and_update({"_id": current_id},
+                                         {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
+            # now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
+            # repeat with that ID
+            current_list_for_ptable.append(individual_table_info[i])
+            if individual_table[i] == "Spouse":
+                indi_ptable.add_row(current_list_for_ptable)
+                current_list_for_ptable.clear()
+    print(indi_ptable)
+
+    fam_ptable = PrettyTable(family_table)
+    current_list_for_ptable = []
+    print("\nFamilies: ")
+    for family_id in fam_ids:
+        family = familes[family_id]
+        children_temp = family.getChild()
+        child_str = ' '.join(children_temp)
+        family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(),
+                             family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
+        current_id = ''
+        for i in range(0, len(family_table)):
+            if family_table[i] == "ID":
+                current_id = family_table_info[i]
+
+            db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
+                                        upsert=True)
+            current_list_for_ptable.append(family_table_info[i])
+            if family_table[i] == "Children":
+                fam_ptable.add_row(current_list_for_ptable)
+                current_list_for_ptable.clear()
+    print(fam_ptable)
 
     from user_stories import US36, US01, US07
     recent_survivor_ids = []

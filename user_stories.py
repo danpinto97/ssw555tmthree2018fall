@@ -122,6 +122,7 @@ def US36(death):
     return False
 
 
+
 from app import client
 
 db = client()
@@ -160,6 +161,61 @@ def US05(family_id):
         if get_dt_obj(wife['Death']) < get_dt_obj(family['Married']):
             return False
     return True
+
+def US13(birth, death):
+    '''
+    This function checks for birth before death
+    Args:
+        birth: date taken in as datetime to be tested.
+        death: date taken in as datetime to be tested.
+    Returns:
+        True/False: True if the birth comes before the death date, False if not.
+    '''
+    if birth is None:
+        return False
+    if death is None:
+        return False
+    if birth < death:
+        return True
+    return False
+
+def US15(birth, marriage):
+    '''
+    This function checks for birth before marriage
+    Args:
+        birth: date taken in as datetime to be tested.
+        marriage: date taken in as datetime to be tested.
+    Returns:
+        True/False: True if the birth comes before the marriage date, False if not.
+    '''
+    if birth is None:
+        return False
+    if marriage is None:
+        return False
+    if birth < marriage:
+        return True
+    return False
+
+def US06(div, death1, death2):
+    '''
+    This function checks for divorce before deaths of both spouses
+    Args:
+        div: Divorce date
+        death1: death date
+        death2: partner death date
+    Returns:
+        True/False: True if the divorce comes before death, False if not.
+    '''
+    if div is None:
+        return False
+    if death1 is None:
+        return False
+    if death2 is None:
+        return False
+    if div < death1 and div < death2:
+        return True
+    return False
+
 
 def US11(indi_id):
     indi = db.indis.find_one({"_id": indi_id})
@@ -205,5 +261,5 @@ def US37(recent_dead_id):
     if len(child_list) > 0:
         for child in child_list:
             survivors.append(child)
-    return survivors
 
+    return survivors
