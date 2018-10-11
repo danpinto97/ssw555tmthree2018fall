@@ -1,12 +1,15 @@
 import datetime
-
+from dateutil.relativedelta import relativedelta
 
 def get_dt_obj(string_date):
     """
     get the datetime object of a date string
     :param string_date: form of "03-MAR-1990"
-    :return: datetime object
+    :return: datetime object or False in the case that the date is not known
     """
+    if string_date == '' or string_date == 'N/A' or string_date == 'Unknown':
+        #Also return true for cases where date is unknown
+        return False
     return datetime.datetime.strptime(string_date, '%d-%b-%Y')
 
 def US01(date):
@@ -263,3 +266,54 @@ def US37(recent_dead_id):
             survivors.append(child)
 
     return survivors
+
+def US10(family_id):
+    '''
+    This function checks that a marriage does not occur before the age of 14 for all families. It does so by comparing
+    the marriage date and birth dates of both Husband and Wife.
+    '''
+    family = db.fams.find_one({'_id':family_id})
+    marriage_date = get_dt_obj(family['Married'])
+    husband_birth = get_dt_obj(db.indis.find_one({'_id': family['Husband ID']})['Birthday'])
+    wife_birth = get_dt_obj(db.indis.find_one({'_id': family['Wife ID']})['Birthday'])
+
+    if husband_birth == False or wife_birth == False or marriage_date == False:
+        return True
+
+    if relativedelta(marriage_date,husband_birth).years >= 14 and relativedelta(marriage_date,wife_birth).years >= 14:
+        return True
+    else:
+        return False
+
+def US08(family_id):
+    '''
+    This function checks that a birth does not occur before the marriage date of two parents.
+    Args:
+         family_id: The family id to be looked up in our database to get the info needed
+    Returns:
+        True/False: True if the birth happens before the marriage, false otherwise.
+    '''
+    family = db.fams.find_one({'_id': family_id})
+    marriage_date = get_dt_obj(family['Married'])
+    divorce_date = get_dt_obj(family['Married'])
+    if marriage_date == False or family['Children'] == 'N / A':
+        return True
+    children_ids = family['Children'].split()
+    for _id in children_ids:
+        child_birth = get_dt_obj(db.indis.find_one({'_id': _id})['Birthday'])
+        if child_birth == False:
+            return True
+        if child_birth < marriage_date:
+            print('ERROR: US08', _id, 'Birth occurs before parent\'s marriage!')
+            return False
+        if divorce_date is not False:
+            if divorce_date.year == child_birth.year:
+                if relativedelta(divorce_date,child_birth).months > 9:
+                    print('ERROR: US08', _id, 'Birth occurs more than 9 months after parent\'s divorce!')
+                    return False
+
+                elif relativedelta(divorce_date,child_birth).months == 9:
+                    if relativedelta(divorce_date,child_birth).days > 0:
+                        print('ERROR: US08', _id, 'Birth occurs more than 9 months after parent\'s divorce!')
+                        return False
+    return True
