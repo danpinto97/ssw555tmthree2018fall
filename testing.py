@@ -6,7 +6,7 @@ import user_stories
 db = app.client()
 
 import datetime
-from user_stories import US01, US36, US07, US13, US15, US06, US37
+from user_stories import US01, US36, US07, US13, US15, US06, US37, US04, US05
 
 current_date = datetime.datetime.now()
 
@@ -277,6 +277,79 @@ class TestUS37(unittest.TestCase):
                 test_survivors.append(child)
 
         self.assertEqual(US37("@I6000000081765037935@"), test_survivors)
+        return
+
+class TestUS04(unittest.TestCase):
+    def test_person1(self):
+
+
+
+        self.assertEqual(US04("@F6000000081765016861@"), True)
+        return
+
+    def test_person2(self):
+
+
+
+        self.assertEqual(US04("@F6000000081764012545@"), True)
+        return
+
+    def test_person3(self):
+
+
+
+        self.assertEqual(US04("@F6000000081764992957@"), True)
+        return
+
+    def test_person4(self):
+
+
+
+        self.assertEqual(US04("@F6000000081765002915@"), True)
+        return
+
+    def test_person5(self):
+
+
+
+        self.assertEqual(US04("@F6000000081764288518@"), True)
+        return
+
+
+class TestUS05(unittest.TestCase):
+    def test_person1(self):
+
+
+
+        self.assertEqual(US05("@F6000000081765016861@"), True)
+        return
+
+    def test_person2(self):
+
+
+
+        self.assertEqual(US05("@F6000000081764012545@"), True)
+        return
+
+    def test_person3(self):
+
+
+
+        self.assertEqual(US05("@F6000000081765002915@"), True)
+        return
+
+    def test_person4(self):
+
+
+
+        self.assertEqual(US05("@F6000000081765002915@"), True)
+        return
+
+    def test_person5(self):
+
+
+
+        self.assertEqual(US05("@F6000000081764288518@"), True)
         return
 
 if __name__ == '__main__':

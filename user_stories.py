@@ -137,6 +137,8 @@ def US04(family_id):
     :return: True if marriage happened before divorce. False if not
     """
     family = db.fams.find_one({'_id': family_id})
+    if family == None:
+        raise ValueError('family is none')
     if family['Married'] == "":
         return True
     elif family['Divorced'] == 'N/A':
@@ -155,8 +157,8 @@ def US05(family_id):
     family = db.fams.find_one({'_id': family_id})
     if family['Married'] == "":
         return True
-    husband = db.fams.find_one({'_id': family['Husband ID']})
-    wife = db.fams.find_one({'_id': family['Wife ID']})
+    husband = db.indis.find_one({'_id': family['Husband ID']})
+    wife = db.indis.find_one({'_id': family['Wife ID']})
     if husband['Death'] != 'N/A':
         if get_dt_obj(husband['Death']) < get_dt_obj(family['Married']):
             return False
@@ -221,36 +223,49 @@ def US06(div, death1, death2):
 
 
 def US11(indi_id):
+    """
+    :param indi_id: indiviual id
+    :return: True if no bigamy, false if there is
+    """
     indi = db.indis.find_one({"_id": indi_id})
     spouse_list = indi["Spouse"].split()
     if len(spouse_list) <= 1:
         return True
     for marr in spouse_list:
         marr_indi = db.indis.find_one({"_id": marr})
+        if marr_indi is None:
+            continue
         marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : marr}, {"Husband ID": indi_id}]}]})
+        if marr_fam is None:
+            continue
         for other_marr in spouse_list:
             if other_marr == marr:
                 continue
             other_marr_indi = db.indis.find_one({"_id": other_marr})
+            if other_marr_indi is None:
+                continue_
             other_marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : other_marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : other_marr}, {"Husband ID": indi_id}]}]})
-            if get_dt_obj(other_marr_fam["Married"]) < get_dt_obj(marr_fam["Married"]):
-                if other_marr_fam["Divorced"]:
-                    if get_dt_obj(other_marr_fam["Divorced"]) > get_dt_obj(marr_fam["Married"]):
+            if other_marr_fam is None:
+                continue
+            if other_marr_fam["Married"]:
+                if get_dt_obj(other_marr_fam["Married"]) < get_dt_obj(marr_fam["Married"]):
+                    if other_marr_fam["Divorced"]:
+                        if get_dt_obj(other_marr_fam["Divorced"]) > get_dt_obj(marr_fam["Married"]):
+                            return False
+                    elif other_marr_indi["death"] != "N/A":
+                        if get_dt_obj(other_marr_indi["death"]) > get_dt_obj(marr_fam["Married"]):
+                            return False
+                    else:
                         return False
-                elif other_marr_indi["death"] != "N/A":
-                    if get_dt_obj(other_marr_indi["death"]) > get_dt_obj(marr_fam["Married"]):
+                elif get_dt_obj(other_marr_fam["Married"]) > get_dt_obj(marr_fam["Married"]):
+                    if marr_fam["Divorced"]:
+                        if get_dt_obj(marr_fam["Divorced"]) > get_dt_obj(other_marr_fam["Married"]):
+                            return False
+                    elif marr_indi["death"] != "N/A":
+                        if get_dt_obj(marr_indi["death"]) > get_dt_obj(other_marr_fam["Married"]):
+                            return False
+                    else:
                         return False
-                else:
-                    return False
-            elif get_dt_obj(other_marr_fam["Married"]) > get_dt_obj(marr_fam["Married"]):
-                if marr_fam["Divorced"]:
-                    if get_dt_obj(marr_fam["Divorced"]) > get_dt_obj(other_marr_fam["Married"]):
-                        return False
-                elif marr_indi["death"] != "N/A":
-                    if get_dt_obj(marr_indi["death"]) > get_dt_obj(other_marr_fam["Married"]):
-                        return False
-                else:
-                    return False
     return True
 
 def US37(recent_dead_id):
