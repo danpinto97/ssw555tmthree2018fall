@@ -224,8 +224,8 @@ def main():
                 current_list_for_ptable.clear()
     print(fam_ptable)
 
-    from user_stories import US36, US01, US07, US10, US08
-    recent_survivor_ids = []
+    from user_stories import US36, US01, US07, US10, US08, US04, US05, US37, US11
+    recent_death_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
@@ -236,10 +236,14 @@ def main():
         if US01(item['dates']['birth']) == False or US01(item['dates']['death']) == False:
             print('ERROR: US01 ', item['_id'],'Birthday or Death past current date!')
         if US36(item['dates']['death']):
-            recent_survivor_ids.append(item['_id'])
+            recent_death_ids.append(item['_id'])
 
-    if len(recent_survivor_ids) > 0:
-        print('US36: Recent survivor ids: ',recent_survivor_ids)
+    if len(recent_death_ids) > 0:
+        print('US36: Recent death ids: ',recent_death_ids)
+        for dead_id in recent_death_ids:
+            survivors = US37(dead_id)
+            if len(survivors) > 0:
+                print('recent survivors of id', dead_id, 'are', survivors)
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
@@ -251,6 +255,16 @@ def main():
         if US01(item['dates']['divorce']) == False or US01(item['dates']['marriage']) == False:
             print('ERROR: US01 ',item['_id'], 'marriage or divorce past current date!')
         US08(item['_id'])
+
+    for indiviual in db.indis.find({}):
+        if not US11(indiviual['_id']):
+            print('ERROR: US11', indiviual, 'is/was married to more than one person at a time')
+
+    for family in db.fams.find({}):
+        if not US04(family['_id']):
+            print('ERROR: US04', family['_id'], 'Marriage not before divorce')
+        if not US05(family['_id']):
+            print('ERROR: US05', family['_id'], 'Marriage not before death')
 
 if __name__ == '__main__':
     main()
