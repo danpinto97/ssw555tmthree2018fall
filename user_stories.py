@@ -216,7 +216,7 @@ def US06(div, death1, death2):
     if death1 is None and death2 is None:
         return True
     if death1 is None:
-        death1 = datetime.datetime.today() + 
+        death1 = datetime.datetime.today() + relativedelta(years=+9)
     if death2 is None:
         return False
     if div < death1 and div < death2:
