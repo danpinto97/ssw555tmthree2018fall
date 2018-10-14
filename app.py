@@ -175,80 +175,96 @@ def main():
     individual_table = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse"]
     family_table = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
     indi_ptable = PrettyTable(individual_table)
-    print("\n\n\n\nIndividuals: ")
-    if db.indis.find_one() is None:
-        # if the individuals database is empty we need to add to it, otherwise skip this portion. Same for family db.
-        for indiv in indi_ids:
-            indi = indis[indiv]
-            children_temp = indi.getChild()
-            spouses_temp = indi.getSpouse()
-            children_temp_str = ' '.join(children_temp)
-            spouses_temp_str = ' '.join(spouses_temp)
-            individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(),
-                                     str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str,
-                                     spouses_temp_str]
-            current_id = ''
-            current_list_for_ptable= []
-            for i in range(0, len(individual_table)):
-                if individual_table[i] == "ID":
-                    current_id = individual_table_info[i]
-                    # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
-                db.indis.find_one_and_update({"_id": current_id},
-                                             {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
-                # now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
-                # repeat with that ID
-                current_list_for_ptable.append(individual_table_info[i])
-                if individual_table[i] == "Spouse":
-                    indi_ptable.add_row(current_list_for_ptable)
-                    current_list_for_ptable.clear()
+    print("Individuals: ")
+
+    for indiv in indi_ids:
+        indi = indis[indiv]
+        children_temp = indi.getChild()
+        spouses_temp = indi.getSpouse()
+        children_temp_str = ' '.join(children_temp)
+        spouses_temp_str = ' '.join(spouses_temp)
+        individual_table_info = [indi.getID(), indi.getName(), indi.getGender(), indi.getBirthday(),
+                                 str(indi.getAge()), str(indi.getAlive()), indi.getDeath(), children_temp_str,
+                                 spouses_temp_str]
+        current_id = ''
+        current_list_for_ptable= []
+        for i in range(0, len(individual_table)):
+            if individual_table[i] == "ID":
+                current_id = individual_table_info[i]
+                # if table[i] is ID, we need to set it to current id and insert just the the _id as the correlating ID to the db.
+            db.indis.find_one_and_update({"_id": current_id},
+                                         {'$set': {individual_table[i]: individual_table_info[i]}}, upsert=True)
+            # now we find that _id and continue to update it with whatever info we have until we reach a new ID and then
+            # repeat with that ID
+            current_list_for_ptable.append(individual_table_info[i])
+            if individual_table[i] == "Spouse":
+                indi_ptable.add_row(current_list_for_ptable)
+                current_list_for_ptable.clear()
     print(indi_ptable)
 
     fam_ptable = PrettyTable(family_table)
     current_list_for_ptable = []
-    print("\n\n\nFamilies: ")
-    if db.fams.find_one() is None:
-        for family_id in fam_ids:
-            family = familes[family_id]
-            children_temp = family.getChild()
-            child_str = ' '.join(children_temp)
-            family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(),
-                                 family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
-            current_id = ''
-            for i in range(0, len(family_table)):
-                if family_table[i] == "ID":
-                    current_id = family_table_info[i]
-                db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
-                                            upsert=True)
-                current_list_for_ptable.append(family_table_info[i])
-                if family_table[i] == "Children":
-                    fam_ptable.add_row(current_list_for_ptable)
-                    current_list_for_ptable.clear()
+    print("\nFamilies: ")
+    for family_id in fam_ids:
+        family = familes[family_id]
+        children_temp = family.getChild()
+        child_str = ' '.join(children_temp)
+        family_table_info = [family.getID(), family.getMarried(), family.getDivorced(), family.getHusbandID(),
+                             family.getHusbandName(), family.getWifeID(), family.getWifeName(), child_str]
+        current_id = ''
+        for i in range(0, len(family_table)):
+            if family_table[i] == "ID":
+                current_id = family_table_info[i]
+
+            db.fams.find_one_and_update({"_id": current_id}, {'$set': {family_table[i]: family_table_info[i]}},
+                                        upsert=True)
+            current_list_for_ptable.append(family_table_info[i])
+            if family_table[i] == "Children":
+                fam_ptable.add_row(current_list_for_ptable)
+                current_list_for_ptable.clear()
     print(fam_ptable)
 
-    from user_stories import US36, US01, US07
-    recent_survivor_ids = []
+    from user_stories import US36, US01, US07, US10, US08, US04, US05, US37, US11
+    recent_death_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
             'dates':{'birth':'$Birthday', 'death': '$Death'}}}
     ]):
         if US07(item['dates']['birth'],item['dates']['death']):
-            print('ERROR: Person older than 150 years!')
+            print('ERROR: US07 ', item['_id'], 'older than 150 years!')
         if US01(item['dates']['birth']) == False or US01(item['dates']['death']) == False:
-            print('ERROR: Past current date!')
+            print('ERROR: US01 ', item['_id'],'Birthday or Death past current date!')
         if US36(item['dates']['death']):
-            recent_survivor_ids.append(item['_id'])
+            recent_death_ids.append(item['_id'])
 
-    if len(recent_survivor_ids) > 0:
-        print('Recent survivor ids: ',recent_survivor_ids)
+    if len(recent_death_ids) > 0:
+        print('US36: Recent death ids: ',recent_death_ids)
+        for dead_id in recent_death_ids:
+            survivors = US37(dead_id)
+            if len(survivors) > 0:
+                print('recent survivors of id', dead_id, 'are', survivors)
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
         {'$project': {
             'dates': {'divorce': '$Married', 'marriage': '$Divorced'}}}
     ]):
+        if US10(item['_id']) is False:
+            print('ERROR: US10 ', item['_id'], 'marriage occurs before the age of 14 for wife or husband!')
         if US01(item['dates']['divorce']) == False or US01(item['dates']['marriage']) == False:
-            print('ERROR: Past current date!')
+            print('ERROR: US01 ',item['_id'], 'marriage or divorce past current date!')
+        US08(item['_id'])
+
+    for indiviual in db.indis.find({}):
+        if not US11(indiviual['_id']):
+            print('ERROR: US11', indiviual, 'is/was married to more than one person at a time')
+
+    for family in db.fams.find({}):
+        if not US04(family['_id']):
+            print('ERROR: US04', family['_id'], 'Marriage not before divorce')
+        if not US05(family['_id']):
+            print('ERROR: US05', family['_id'], 'Marriage not before death')
 
 if __name__ == '__main__':
     main()

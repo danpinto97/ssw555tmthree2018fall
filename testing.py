@@ -1,12 +1,13 @@
 import unittest
 import app
+
+import user_stories
+
 db = app.client()
+
 import datetime
-<<<<<<< HEAD
-from user_stories import US01, US36, US07, US13, US15, US06
-=======
-from user_stories import US01, US36, US07, US13, US15, US06, US37
->>>>>>> e5c353e8ceffde0fdd69eca89707406a56d63965
+from user_stories import US01, US36, US07, US13, US15, US06, US37, US04, US05, US42, US09
+
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):
@@ -68,6 +69,36 @@ class TestUS07(unittest.TestCase):
         self.assertEqual(US07('5-MAR-1700', '5-FEB-1850'), False)
         return
 
+    def test_150_years(self):
+        self.assertEqual(US07('5-MAR-1700', '5-MAR-1850'), False)
+        return
+
+class TestUS11(unittest.TestCase):
+
+    def test_person1(self):
+        person1_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person1_id), True)
+        return
+
+    def test_person2(self):
+        person2_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person2_id), True)
+        return
+
+    def test_person3(self):
+        person3_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person3_id), True)
+        return
+
+    def test_person4(self):
+        person4_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person4_id), True)
+        return
+
+    def test_person5(self):
+        person5_id = db.indis.find_one({})["_id"]
+        self.assertEqual(user_stories.US11(person5_id), True)
+        return
 
 class TestUS36(unittest.TestCase):
 
@@ -94,6 +125,7 @@ class TestUS36(unittest.TestCase):
     def test_today(self):
         self.assertEqual(US36(current_date), True)
         return
+
 
 class TestUS13(unittest.TestCase):
     def test_two_unknowns(self):
@@ -168,10 +200,6 @@ class TestUS06(unittest.TestCase):
         self.assertEqual(US06(death1, div, death2), False)
         return
 
-
-<<<<<<< HEAD
-
-=======
 class TestUS37(unittest.TestCase):
 
     def test_person1(self):
@@ -248,7 +276,83 @@ class TestUS37(unittest.TestCase):
 
         self.assertEqual(US37("@I6000000081765037935@"), test_survivors)
         return
->>>>>>> e5c353e8ceffde0fdd69eca89707406a56d63965
+
+class TestUS04(unittest.TestCase):
+    def test_person1(self):
+        self.assertEqual(US04("@F6000000081765016861@"), True)
+        return
+
+    def test_person2(self):
+        self.assertEqual(US04("@F6000000081764012545@"), True)
+        return
+
+    def test_person3(self):
+        self.assertEqual(US04("@F6000000081764992957@"), True)
+        return
+
+    def test_person4(self):
+        self.assertEqual(US04("@F6000000081765002915@"), True)
+        return
+
+    def test_person5(self):
+        self.assertEqual(US04("@F6000000081764288518@"), True)
+        return
+
+
+class TestUS05(unittest.TestCase):
+    def test_person1(self):
+        self.assertEqual(US05("@F6000000081765016861@"), True)
+        return
+
+    def test_person2(self):
+        self.assertEqual(US05("@F6000000081764012545@"), True)
+        return
+
+    def test_person3(self):
+        self.assertEqual(US05("@F6000000081765002915@"), True)
+        return
+
+    def test_person4(self):
+        self.assertEqual(US05("@F6000000081765002915@"), True)
+        return
+
+    def test_person5(self):
+        self.assertEqual(US05("@F6000000081764288518@"), True)
+        return
+class TestUS42(unittest.TestCase):
+    def test_date_1(self):
+        self.assertEqual(US42("04-12-1998"), True)
+    def test_date_2(self):
+        self.assertEqual(US42("07-13-1995"), False)
+    def test_date_3(self):
+        self.assertEqual(US42("14-22-1964"), False)
+    def test_date_4(self):
+        self.assertEqual(US42("45-12-1973"), False)
+    def test_date_5(self):
+        self.assertEqual(US42("ABC"), False)
+
+class TestUS09(unittest.TestCase):
+    def test_date_1(self):
+        self.assertEqual(US09(None, None, None), False)
+    def test_date_2(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US09(test, None, None), True)
+    def test_date_3(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        mom = datetime.datetime(2007, 9, 15, 0, 0)
+        dad = datetime.datetime(2003, 9, 15, 0, 0)
+        self.assertEqual(US09(test, mom, dad), False)
+    def test_date_4(self):
+        test = datetime.datetime(2008, 9, 15, 0, 0)
+        mom = datetime.datetime(2007, 9, 15, 0, 0)
+        dad = datetime.datetime(2003, 9, 15, 0, 0)
+        self.assertEqual(US09(test, mom, dad), False)
+    def test_date_5(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        dad = datetime.datetime(2005, 7, 13, 0, 0)
+        self.assertEqual(US09(test, None, dad), False)
 
 if __name__ == '__main__':
     unittest.main()
+
+
