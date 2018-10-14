@@ -167,7 +167,7 @@ def US05(family_id):
             return False
     return True
 
-def US13(birth, death):
+def US03(birth, death):
     '''
     This function checks for birth before death
     Args:
@@ -184,7 +184,7 @@ def US13(birth, death):
         return True
     return False
 
-def US15(birth, marriage):
+def US02(birth, marriage):
     '''
     This function checks for birth before marriage
     Args:
@@ -336,9 +336,30 @@ def US08(family_id):
     return True
 
 def US42(date):
+    if date is None:
+        return True
+    if date=='Unknown':
+        return True
+    if date=='N/A':
+        return True
     try:
+        date_int = {
+            "JAN": 1,
+            "FEB": 2,
+            "MAR": 3,
+            "APR": 4,
+            "MAY": 5,
+            "JUN": 6,
+            "JUL": 7,
+            "AUG": 8,
+            "SEP": 9,
+            "OCT": 10,
+            "NOV": 11,
+            "DEC": 12,
+        }
         spl = date.split("-")
         day = int(spl[0])
+        spl[1] = date_int[spl[1]]
         month = int(spl[1])
         year = int(spl[2])
         test = datetime.datetime(year=year, month=month, day=day)

@@ -224,19 +224,32 @@ def main():
                 current_list_for_ptable.clear()
     print(fam_ptable)
 
-    from user_stories import US36, US01, US07, US10, US08, US04, US05, US37, US11
+    from user_stories import US36, US01, US07, US10, US08, US04, US05, US37, US11, US03, US02, US42
     recent_death_ids = []
+    birth_dates = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
             'dates':{'birth':'$Birthday', 'death': '$Death'}}}
     ]):
-        if US07(item['dates']['birth'],item['dates']['death']):
+        if US07(item['dates']['birth'], item['dates']['death']):
             print('ERROR: US07 ', item['_id'], 'older than 150 years!')
         if US01(item['dates']['birth']) == False or US01(item['dates']['death']) == False:
             print('ERROR: US01 ', item['_id'],'Birthday or Death past current date!')
         if US36(item['dates']['death']):
             recent_death_ids.append(item['_id'])
+        birth_d = item['dates']['birth']
+        death_d = item['dates']['death']
+        if birth_d == 'Unknown':
+            birth_d = None
+        if death_d == 'Unknown':
+            death_d = None
+        if US03(birth_d, death_d) == False:
+            print('ERROR: US03 ', item['_id'], 'birth after death!')
+        if US42(birth_d) == False:
+            print('ERROR: US42 ', item['_id'], "invalid date!")
+        if US42(death_d) == False:
+            print('ERROR: US42 ', item['_id'], "invalid date!")
 
     if len(recent_death_ids) > 0:
         print('US36: Recent death ids: ',recent_death_ids)

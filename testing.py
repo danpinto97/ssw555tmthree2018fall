@@ -6,7 +6,7 @@ import user_stories
 db = app.client()
 
 import datetime
-from user_stories import US01, US36, US07, US13, US15, US06, US37, US04, US05, US42, US09
+from user_stories import US01, US36, US07, US03, US02, US06, US37, US04, US05, US42, US09
 
 current_date = datetime.datetime.now()
 
@@ -127,52 +127,52 @@ class TestUS36(unittest.TestCase):
         return
 
 
-class TestUS13(unittest.TestCase):
+class TestUS03(unittest.TestCase):
     def test_two_unknowns(self):
-        self.assertEqual(US13(None, None), False)
+        self.assertEqual(US03(None, None), False)
         return
     def test_left_unk(self):
         #15 Sept 2001
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(None, test), False)
+        self.assertEqual(US03(None, test), False)
         return
     def test_right_unk(self):
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(test, None), False)
+        self.assertEqual(US03(test, None), False)
         return
     def test_proper(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(birth, marriage), True)
+        self.assertEqual(US03(birth, marriage), True)
         return
     def test_reversed(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(marriage, birth), False)
+        self.assertEqual(US03(marriage, birth), False)
         return
 
-class TestUS15(unittest.TestCase):
+class TestUS02(unittest.TestCase):
     def test_two_unknowns(self):
-        self.assertEqual(US15(None, None), False)
+        self.assertEqual(US02(None, None), False)
         return
     def test_left_unk(self):
         #15 Sept 2001
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(None, test), False)
+        self.assertEqual(US02(None, test), False)
         return
     def test_right_unk(self):
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(test, None), False)
+        self.assertEqual(US02(test, None), False)
         return
     def test_proper(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(birth, marriage), True)
+        self.assertEqual(US02(birth, marriage), True)
         return
     def test_reversed(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(marriage, birth), False)
+        self.assertEqual(US02(marriage, birth), False)
         return
 
 class TestUS06(unittest.TestCase):
@@ -319,6 +319,7 @@ class TestUS05(unittest.TestCase):
     def test_person5(self):
         self.assertEqual(US05("@F6000000081764288518@"), True)
         return
+
 class TestUS42(unittest.TestCase):
     def test_date_1(self):
         self.assertEqual(US42("04-12-1998"), True)
