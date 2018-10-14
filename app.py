@@ -4,12 +4,8 @@ from family import Family
 from individual import Individual
 from pymongo import MongoClient
 from prettytable import PrettyTable
-def client():
-    """
-    Connects to the mongoDB client
-    """
-    client = MongoClient('localhost',27017)
-    return client.ged
+from user_stories import *
+
 db = client()
 indis = db.indis
 fams = db.fams
@@ -224,8 +220,8 @@ def main():
                 current_list_for_ptable.clear()
     print(fam_ptable)
 
-    from user_stories import US36, US01, US07, US10, US08, US04, US05, US37, US11
-    recent_death_ids = []
+
+    recent_survivor_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
@@ -236,14 +232,10 @@ def main():
         if US01(item['dates']['birth']) == False or US01(item['dates']['death']) == False:
             print('ERROR: US01 ', item['_id'],'Birthday or Death past current date!')
         if US36(item['dates']['death']):
-            recent_death_ids.append(item['_id'])
+            recent_survivor_ids.append(item['_id'])
 
-    if len(recent_death_ids) > 0:
-        print('US36: Recent death ids: ',recent_death_ids)
-        for dead_id in recent_death_ids:
-            survivors = US37(dead_id)
-            if len(survivors) > 0:
-                print('recent survivors of id', dead_id, 'are', survivors)
+    if len(recent_survivor_ids) > 0:
+        print('US36: Recent death ids: ',recent_survivor_ids)
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},

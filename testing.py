@@ -6,7 +6,7 @@ import user_stories
 db = app.client()
 
 import datetime
-from user_stories import US01, US36, US07, US13, US15, US06, US37, US04, US05
+from user_stories import *
 
 current_date = datetime.datetime.now()
 
@@ -281,78 +281,92 @@ class TestUS37(unittest.TestCase):
 
 class TestUS04(unittest.TestCase):
     def test_person1(self):
-
-
-
         self.assertEqual(US04("@F6000000081765016861@"), True)
         return
 
     def test_person2(self):
-
-
-
         self.assertEqual(US04("@F6000000081764012545@"), True)
         return
 
     def test_person3(self):
-
-
-
         self.assertEqual(US04("@F6000000081764992957@"), True)
         return
 
     def test_person4(self):
-
-
-
         self.assertEqual(US04("@F6000000081765002915@"), True)
         return
 
     def test_person5(self):
-
-
-
         self.assertEqual(US04("@F6000000081764288518@"), True)
         return
 
 
 class TestUS05(unittest.TestCase):
     def test_person1(self):
-
-
-
         self.assertEqual(US05("@F6000000081765016861@"), True)
         return
 
     def test_person2(self):
-
-
-
         self.assertEqual(US05("@F6000000081764012545@"), True)
         return
 
     def test_person3(self):
-
-
-
         self.assertEqual(US05("@F6000000081765002915@"), True)
         return
 
     def test_person4(self):
-
-
-
         self.assertEqual(US05("@F6000000081765002915@"), True)
         return
 
     def test_person5(self):
-
-
-
         self.assertEqual(US05("@F6000000081764288518@"), True)
         return
 
+class TestUS08(unittest.TestCase):
+    def test_false(self):
+        self.assertEqual(US08('@F6000000081765002915@'), False)
+    def test_true(self):
+        self.assertEqual(US08('@F6000000081765016861@'), True)
+
+class TestUS10(unittest.TestCase):
+    def test_false(self):
+        self.assertEqual(US10('@F6000000081765002915@'), True)
+    def test_true(self):
+        self.assertEqual(US10('@F6000000081765016861@'), True)
+
+class TestUS42(unittest.TestCase):
+    def test_date_1(self):
+        self.assertEqual(US42("04-12-1998"), True)
+    def test_date_2(self):
+        self.assertEqual(US42("07-13-1995"), False)
+    def test_date_3(self):
+        self.assertEqual(US42("14-22-1964"), False)
+    def test_date_4(self):
+        self.assertEqual(US42("45-12-1973"), False)
+    def test_date_5(self):
+        self.assertEqual(US42("ABC"), False)
+
+class TestUS09(unittest.TestCase):
+    def test_date_1(self):
+        self.assertEqual(US09(None, None, None), False)
+    def test_date_2(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        self.assertEqual(US09(test, None, None), True)
+    def test_date_3(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        mom = datetime.datetime(2007, 9, 15, 0, 0)
+        dad = datetime.datetime(2003, 9, 15, 0, 0)
+        #mom and dad death dates > birthdate should be true
+        self.assertEqual(US09(test, mom, dad), True)
+    def test_date_4(self):
+        test = datetime.datetime(2008, 9, 15, 0, 0)
+        mom = datetime.datetime(2007, 9, 15, 0, 0)
+        dad = datetime.datetime(2003, 9, 15, 0, 0)
+        self.assertEqual(US09(test, mom, dad), False)
+    def test_date_5(self):
+        test = datetime.datetime(2001, 9, 15, 0, 0)
+        dad = datetime.datetime(2005, 7, 13, 0, 0)
+        self.assertEqual(US09(test, None, dad), True)
+
 if __name__ == '__main__':
     unittest.main()
-
-

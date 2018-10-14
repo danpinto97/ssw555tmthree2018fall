@@ -1,6 +1,15 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 
+from pymongo import MongoClient
+
+def client():
+    """
+    Connects to the mongoDB client
+    """
+    client = MongoClient('localhost',27017)
+    return client.ged
+db = client()
 def get_dt_obj(string_date):
     """
     get the datetime object of a date string
@@ -124,12 +133,6 @@ def US36(death):
         return True
     return False
 
-
-
-from app import client
-
-db = client()
-
 def US04(family_id):
     """
     Marriage before divorce
@@ -137,8 +140,6 @@ def US04(family_id):
     :return: True if marriage happened before divorce. False if not
     """
     family = db.fams.find_one({'_id': family_id})
-    if family == None:
-        raise ValueError('family is none')
     if family['Married'] == "":
         return True
     elif family['Divorced'] == 'N/A':
@@ -223,31 +224,19 @@ def US06(div, death1, death2):
 
 
 def US11(indi_id):
-    """
-    :param indi_id: indiviual id
-    :return: True if no bigamy, false if there is
-    """
     indi = db.indis.find_one({"_id": indi_id})
     spouse_list = indi["Spouse"].split()
     if len(spouse_list) <= 1:
         return True
     for marr in spouse_list:
         marr_indi = db.indis.find_one({"_id": marr})
-        if marr_indi is None:
-            continue
         marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : marr}, {"Husband ID": indi_id}]}]})
-        if marr_fam is None:
-            continue
         for other_marr in spouse_list:
             if other_marr == marr:
                 continue
             other_marr_indi = db.indis.find_one({"_id": other_marr})
-            if other_marr_indi is None:
-                continue_
             other_marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : other_marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : other_marr}, {"Husband ID": indi_id}]}]})
-            if other_marr_fam is None:
-                continue
-            if other_marr_fam["Married"]:
+            try:
                 if get_dt_obj(other_marr_fam["Married"]) < get_dt_obj(marr_fam["Married"]):
                     if other_marr_fam["Divorced"]:
                         if get_dt_obj(other_marr_fam["Divorced"]) > get_dt_obj(marr_fam["Married"]):
@@ -266,6 +255,8 @@ def US11(indi_id):
                             return False
                     else:
                         return False
+            except:
+                continue
     return True
 
 def US37(recent_dead_id):
@@ -332,3 +323,45 @@ def US08(family_id):
                         print('ERROR: US08', _id, 'Birth occurs more than 9 months after parent\'s divorce!')
                         return False
     return True
+
+
+def US42(date):
+    '''
+    This function tests whether a date format is acceptable or not.
+    Args:
+        date: takes in a date in the form of a string
+    Returns:
+        True/False: True if date is acceptable format, False otherwise.
+    '''
+    try:
+        spl = date.split("-")
+        day = int(spl[0])
+        month = int(spl[1])
+        year = int(spl[2])
+        test = datetime.datetime(year=year, month=month, day=day)
+    except:
+        return False
+    return True
+
+def US09(birth, mother_death, father_death):
+    '''
+    This function checks for a birth before the death of parents.
+    Args:
+        birth: birthdate of child
+        mother_death: deathdate of mother
+        father_death: deathdate of father
+    Returns:
+        True/False: True if birth is before death of both parents (or death of father + 9 months for pregnancy), else False
+    '''
+    if birth is None:
+        return False
+    if mother_death is None and father_death is None:
+        return True
+    if mother_death is None:
+        mother_death = datetime.datetime(year=2020, month=5, day=22)
+    if father_death is None:
+        father_death = datetime.datetime(year=2020, month=5, day=22)
+    updated_date = father_death + relativedelta(months=+9)
+    if birth < updated_date and birth < mother_death:
+        return True
+    return False
