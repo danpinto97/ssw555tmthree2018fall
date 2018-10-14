@@ -341,7 +341,7 @@ class TestUS09(unittest.TestCase):
         test = datetime.datetime(2001, 9, 15, 0, 0)
         mom = datetime.datetime(2007, 9, 15, 0, 0)
         dad = datetime.datetime(2003, 9, 15, 0, 0)
-        self.assertEqual(US09(test, mom, dad), False)
+        self.assertEqual(US09(test, mom, dad), True)
     def test_date_4(self):
         test = datetime.datetime(2008, 9, 15, 0, 0)
         mom = datetime.datetime(2007, 9, 15, 0, 0)
@@ -350,7 +350,7 @@ class TestUS09(unittest.TestCase):
     def test_date_5(self):
         test = datetime.datetime(2001, 9, 15, 0, 0)
         dad = datetime.datetime(2005, 7, 13, 0, 0)
-        self.assertEqual(US09(test, None, dad), False)
+        self.assertEqual(US09(test, None, dad), True)
 
 if __name__ == '__main__':
     unittest.main()

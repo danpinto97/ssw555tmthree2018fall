@@ -117,7 +117,7 @@ def US36(death):
         return False
     if type(death) is  str:
         death = get_dt_obj(death)
-    today = datetime.datetime.now()
+    today = datetime.datetime.now() + relativedelta(months=+9)
     if death > today:
         return False
     if today - datetime.timedelta(days=30) <= death:
@@ -213,8 +213,10 @@ def US06(div, death1, death2):
     '''
     if div is None:
         return False
+    if death1 is None and death2 is None:
+        return True
     if death1 is None:
-        return False
+        death1 = datetime.datetime.today() + 
     if death2 is None:
         return False
     if div < death1 and div < death2:
@@ -336,9 +338,9 @@ def US08(family_id):
 def US42(date):
     try:
         spl = date.split("-")
-        day = spl[0]
-        month = spl[1]
-        year = spl[2]
+        day = int(spl[0])
+        month = int(spl[1])
+        year = int(spl[2])
         test = datetime.datetime(year=year, month=month, day=day)
     except:
         return False
