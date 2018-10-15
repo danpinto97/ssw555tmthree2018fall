@@ -270,10 +270,13 @@ def main():
             }},
         {'$unwind': '$wife'}
     ]):
+
         if US02(item['husband']['Birthday'],item['stuff']['marriage']) is False:
             print('ERROR: US02 Husband', item['husband']['_id'], 'occurs after marriage!')
         if US02(item['wife']['Birthday'],item['stuff']['marriage']) is False:
             print('ERROR: US02 Wife', item['wife']['_id'] ,'birth occurs after marriage!')
+        if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']) is False:
+            print('ERROR: US06', item['_id'], 'Death of a spouse occurs before marriage date for family!')
 
     for indiviual in db.indis.find({}):
         if not US11(indiviual['_id']):

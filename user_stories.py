@@ -29,42 +29,13 @@ def US01(date):
     Returns:
         True/False- if false returns, this means that the date is after the current date
     '''
-    if date == '' or date == 'N/A' or date == 'Unknown':
-        #Also return true for cases where date is unknown
+    date = get_dt_obj(date)
+    if date == False:
         return True
-
-    date_int = {
-        "JAN": 1,
-        "FEB": 2,
-        "MAR": 3,
-        "APR": 4,
-        "MAY": 5,
-        "JUN": 6,
-        "JUL": 7,
-        "AUG": 8,
-        "SEP": 9,
-        "OCT": 10,
-        "NOV": 11,
-        "DEC": 12,
-    }
-
-    today = datetime.datetime.now()
-    date = date.split('-')
-    #convert from abbreviation back to number using date_int[date[1]]
-    if today.year > eval(date[2]):
+    if datetime.datetime.now() > date:
         return True
-    elif today.year < eval(date[2]):
-        return False
-    elif today.year ==  eval(date[2]):
-        if today.month > date_int[date[1]]:
-            return True
-        elif today.month == date_int[date[1]]:
-            if today.day < eval(date[0]):
-                return False
-            else:
-                return True
-        else:
-            return False
+    return False
+
 
 
 def US07(birth, death):
@@ -77,39 +48,24 @@ def US07(birth, death):
     Returns:
         True/False: True if the person has been alive for more than 150 years, otherwise False.
     '''
-    if birth == '' or birth == 'N/A' or birth == 'Unknown':
-        # Also return true for cases where date is unknown
+    birth = get_dt_obj(birth)
+    if birth == False:
         return False
-    if death == '' or death == 'N/A' or death == 'Unknown':
-        # Also return true for cases where date is unknown
-        return False
-    date_int = {
-        "JAN": 1,
-        "FEB": 2,
-        "MAR": 3,
-        "APR": 4,
-        "MAY": 5,
-        "JUN": 6,
-        "JUL": 7,
-        "AUG": 8,
-        "SEP": 9,
-        "OCT": 10,
-        "NOV": 11,
-        "DEC": 12,
-    }
-    birth = birth.split('-')
-    death = death.split('-')
-
-    if eval(death[2]) - eval(birth[2]) > 150:
-        #i.e. if 2011 - 1990 > 150
+    death = get_dt_obj(death)
+    if death is False and relativedelta(datetime.datetime.now(),birth).years > 150:
         return True
-    elif eval(death[2]) - eval(birth[2]) == 150:
-        #i.e. if 2011 - 1990 > 150
-        if date_int[death[1]] > date_int[birth[1]]:
+    if relativedelta(datetime.datetime.now(), birth).years == 150 and relativedelta(datetime.datetime.now(), birth).days > 1:
             return True
-        elif date_int[death[1]] == date_int[birth[1]]:
-            if death[0] > birth[0]:
-                return True
+    if death == False:
+        return False
+
+    difference_years = relativedelta(death,birth).years
+    difference_days = relativedelta(death,birth).days
+    if difference_years > 150:
+        return True
+    elif difference_years == 150 and difference_days > 0:
+        #If it is exactly 150 years we need to check edge case if it is 1 or more days into the future
+        return True
     return False
 
 def US36(death):

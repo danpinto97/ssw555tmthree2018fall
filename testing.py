@@ -129,16 +129,16 @@ class TestUS36(unittest.TestCase):
 
 class TestUS02(unittest.TestCase):
     def test_two_unknowns(self):
-        self.assertEqual(US02(None, None), False)
+        self.assertEqual(US02(None, None), True)
         return
     def test_left_unk(self):
         #15 Sept 2001
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US02(None, test), False)
+        self.assertEqual(US02(None, test), True)
         return
     def test_right_unk(self):
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US02(test, None), False)
+        self.assertEqual(US02(test, None), True)
         return
     def test_proper(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
