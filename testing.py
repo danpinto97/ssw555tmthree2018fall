@@ -3,11 +3,11 @@ import app
 
 import user_stories
 
-db = app.client()
+
 
 import datetime
 from user_stories import *
-
+db = client()
 current_date = datetime.datetime.now()
 
 class TestUS01(unittest.TestCase):
@@ -127,52 +127,52 @@ class TestUS36(unittest.TestCase):
         return
 
 
-class TestUS13(unittest.TestCase):
+class TestUS02(unittest.TestCase):
     def test_two_unknowns(self):
-        self.assertEqual(US13(None, None), False)
+        self.assertEqual(US02(None, None), False)
         return
     def test_left_unk(self):
         #15 Sept 2001
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(None, test), False)
+        self.assertEqual(US02(None, test), False)
         return
     def test_right_unk(self):
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(test, None), False)
+        self.assertEqual(US02(test, None), False)
         return
     def test_proper(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(birth, marriage), True)
+        self.assertEqual(US02(birth, marriage), True)
         return
     def test_reversed(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US13(marriage, birth), False)
+        self.assertEqual(US02(marriage, birth), False)
         return
 
-class TestUS15(unittest.TestCase):
+class TestUS03(unittest.TestCase):
     def test_two_unknowns(self):
-        self.assertEqual(US15(None, None), False)
+        self.assertEqual(US03(None, None), True)
         return
     def test_left_unk(self):
         #15 Sept 2001
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(None, test), False)
+        self.assertEqual(US03(None, test), True)
         return
     def test_right_unk(self):
         test = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(test, None), False)
+        self.assertEqual(US03(test, None), True)
         return
     def test_proper(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(birth, marriage), True)
+        self.assertEqual(US03(birth, marriage), True)
         return
     def test_reversed(self):
         birth = datetime.datetime(1920, 8, 4, 0, 0)
         marriage = datetime.datetime(2001, 9, 15, 0, 0)
-        self.assertEqual(US15(marriage, birth), False)
+        self.assertEqual(US03(marriage, birth), False)
         return
 
 class TestUS06(unittest.TestCase):
@@ -205,7 +205,7 @@ class TestUS06(unittest.TestCase):
 class TestUS37(unittest.TestCase):
 
     def test_person1(self):
-        dead_indi = db.indis.find_one({"_id": "@I6000000081764934924@"})
+        dead_indi = db.indis.find_one({"_id": "@I2@"})
         test_survivors = []
         spouse_list = dead_indi["Spouse"].split()
         child_list = dead_indi["Child"].split()
@@ -216,11 +216,11 @@ class TestUS37(unittest.TestCase):
             for child in child_list:
                 test_survivors.append(child)
 
-        self.assertEqual(US37("@I6000000081764934924@"), test_survivors)
+        self.assertEqual(US37("@I2@"), test_survivors)
         return
 
     def test_person2(self):
-        dead_indi = db.indis.find_one({"_id": "@I6000000081764947910@"})
+        dead_indi = db.indis.find_one({"_id": "@I7@"})
         test_survivors = []
         spouse_list = dead_indi["Spouse"].split()
         child_list = dead_indi["Child"].split()
@@ -231,11 +231,11 @@ class TestUS37(unittest.TestCase):
             for child in child_list:
                 test_survivors.append(child)
 
-        self.assertEqual(US37("@I6000000081764947910@"), test_survivors)
+        self.assertEqual(US37("@I7@"), test_survivors)
         return
 
     def test_person3(self):
-        dead_indi = db.indis.find_one({"_id": "@I6000000081765016854@"})
+        dead_indi = db.indis.find_one({"_id": "@I10@"})
         test_survivors = []
         spouse_list = dead_indi["Spouse"].split()
         child_list = dead_indi["Child"].split()
@@ -246,11 +246,11 @@ class TestUS37(unittest.TestCase):
             for child in child_list:
                 test_survivors.append(child)
 
-        self.assertEqual(US37("@I6000000081765016854@"), test_survivors)
+        self.assertEqual(US37("@I10@"), test_survivors)
         return
 
     def test_person4(self):
-        dead_indi = db.indis.find_one({"_id": "@I6000000081764012539@"})
+        dead_indi = db.indis.find_one({"_id": "@I19@"})
         test_survivors = []
         spouse_list = dead_indi["Spouse"].split()
         child_list = dead_indi["Child"].split()
@@ -261,11 +261,11 @@ class TestUS37(unittest.TestCase):
             for child in child_list:
                 test_survivors.append(child)
 
-        self.assertEqual(US37("@I6000000081764012539@"), test_survivors)
+        self.assertEqual(US37("@I19@"), test_survivors)
         return
 
     def test_person5(self):
-        dead_indi = db.indis.find_one({"_id": "@I6000000081765037935@"})
+        dead_indi = db.indis.find_one({"_id": "@I28@"})
         test_survivors = []
         spouse_list = dead_indi["Spouse"].split()
         child_list = dead_indi["Child"].split()
@@ -276,63 +276,74 @@ class TestUS37(unittest.TestCase):
             for child in child_list:
                 test_survivors.append(child)
 
-        self.assertEqual(US37("@I6000000081765037935@"), test_survivors)
+        self.assertEqual(US37("@I28@"), test_survivors)
         return
 
 class TestUS04(unittest.TestCase):
+
     def test_person1(self):
-        self.assertEqual(US04("@F6000000081765016861@"), True)
+        test_1 = db.fams.find_one()
+        self.assertEqual(US04(test_1['_id']), True)
         return
 
     def test_person2(self):
-        self.assertEqual(US04("@F6000000081764012545@"), True)
+        test_2 = db.fams.find_one({})
+        self.assertEqual(US04(test_2['_id']), True)
         return
 
     def test_person3(self):
-        self.assertEqual(US04("@F6000000081764992957@"), True)
+        test_3 = db.fams.find_one({})
+        self.assertEqual(US04(test_3['_id']), True)
         return
 
     def test_person4(self):
-        self.assertEqual(US04("@F6000000081765002915@"), True)
+        test_4 = db.fams.find_one({})
+        self.assertEqual(US04(test_4['_id']), True)
         return
 
     def test_person5(self):
-        self.assertEqual(US04("@F6000000081764288518@"), True)
+        test_5 = db.fams.find_one({})
+        self.assertEqual(US04(test_5['_id']), True)
         return
 
 
 class TestUS05(unittest.TestCase):
     def test_person1(self):
-        self.assertEqual(US05("@F6000000081765016861@"), True)
+        test_1 = db.fams.find_one({})
+        self.assertEqual(US05(test_1['_id']), True)
         return
 
     def test_person2(self):
-        self.assertEqual(US05("@F6000000081764012545@"), True)
+        test_2 = db.fams.find_one({})
+        self.assertEqual(US05(test_2['_id']), True)
         return
 
     def test_person3(self):
-        self.assertEqual(US05("@F6000000081765002915@"), True)
+        test_3 = db.fams.find_one({})
+        self.assertEqual(US05(test_3['_id']), True)
         return
 
     def test_person4(self):
-        self.assertEqual(US05("@F6000000081765002915@"), True)
+        test_4 = db.fams.find_one({})
+        self.assertEqual(US05(test_4['_id']), True)
         return
 
     def test_person5(self):
-        self.assertEqual(US05("@F6000000081764288518@"), True)
+        test_5 = db.fams.find_one({})
+        self.assertEqual(US05(test_5['_id']), True)
         return
 
 class TestUS08(unittest.TestCase):
     def test_false(self):
-        self.assertEqual(US08('@F6000000081765002915@'), False)
+        self.assertEqual(US08('@F8@'), False)
     def test_true(self):
-        self.assertEqual(US08('@F6000000081765016861@'), True)
+        self.assertEqual(US08('@F4@'), True)
 
 class TestUS10(unittest.TestCase):
     def test_false(self):
-        self.assertEqual(US10('@F6000000081765002915@'), True)
+        self.assertEqual(US10('@F5@'), True)
     def test_true(self):
-        self.assertEqual(US10('@F6000000081765016861@'), True)
+        self.assertEqual(US10('@F5@'), True)
 
 class TestUS42(unittest.TestCase):
     def test_date_1(self):

@@ -31,7 +31,7 @@ def main():
     looking_date_div = False
     current_id = ""
     #read file one line at a time from file in open(...)
-    with open("test_family.ged") as f:
+    with open("real_test_ged.ged") as f:
         for line in f:
             line = line.strip('\n')
             #dont work with empty lies
@@ -221,7 +221,7 @@ def main():
     print(fam_ptable)
 
 
-    recent_survivor_ids = []
+    recent_death_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
@@ -232,10 +232,12 @@ def main():
         if US01(item['dates']['birth']) == False or US01(item['dates']['death']) == False:
             print('ERROR: US01 ', item['_id'],'Birthday or Death past current date!')
         if US36(item['dates']['death']):
-            recent_survivor_ids.append(item['_id'])
+            recent_death_ids.append(item['_id'])
+        if US03(item['dates']['birth'],item['dates']['death']) is False:
+            print('ERROR: US03 ', item['_id'],'Birth before death!')
 
-    if len(recent_survivor_ids) > 0:
-        print('US36: Recent death ids: ',recent_survivor_ids)
+    if len(recent_death_ids) > 0:
+        print('US36: Recent death ids: ',recent_death_ids)
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
@@ -247,6 +249,31 @@ def main():
         if US01(item['dates']['divorce']) == False or US01(item['dates']['marriage']) == False:
             print('ERROR: US01 ',item['_id'], 'marriage or divorce past current date!')
         US08(item['_id'])
+
+    for item in db.fams.aggregate([
+        {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
+        {'$project' : {'stuff': {'divorce': '$Married', 'marriage': '$Divorced', 'husband_id' : '$Husband ID', 'wife_id' : '$Wife ID'}}},
+        {'$lookup' :
+             {
+                 'from' : 'indis',
+                 'localField' : 'stuff.husband_id',
+                 'foreignField' : '_id',
+                 'as' : 'husband'
+             }},
+        {'$unwind': '$husband'},
+        {'$lookup':
+            {
+                'from': 'indis',
+                'localField': 'stuff.wife_id',
+                'foreignField': '_id',
+                'as': 'wife'
+            }},
+        {'$unwind': '$wife'}
+    ]):
+        if US02(item['husband']['Birthday'],item['stuff']['marriage']) is False:
+            print('ERROR: US02 Husband', item['husband']['_id'], 'occurs after marriage!')
+        if US02(item['wife']['Birthday'],item['stuff']['marriage']) is False:
+            print('ERROR: US02 Wife', item['wife']['_id'] ,'birth occurs after marriage!')
 
     for indiviual in db.indis.find({}):
         if not US11(indiviual['_id']):

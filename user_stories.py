@@ -163,12 +163,12 @@ def US05(family_id):
     if husband['Death'] != 'N/A':
         if get_dt_obj(husband['Death']) < get_dt_obj(family['Married']):
             return False
-    if family['Wife ID'] != 'N/A':
+    if wife['Death'] != 'N/A':
         if get_dt_obj(wife['Death']) < get_dt_obj(family['Married']):
             return False
     return True
 
-def US13(birth, death):
+def US03(birth, death):
     '''
     This function checks for birth before death
     Args:
@@ -176,16 +176,20 @@ def US13(birth, death):
         death: date taken in as datetime to be tested.
     Returns:
         True/False: True if the birth comes before the death date, False if not.
+        Should always be true in case of birth or death not known.
     '''
-    if birth is None:
-        return False
-    if death is None:
-        return False
+    if type(birth) == str and type(death) == str:
+        birth = get_dt_obj(birth)
+        death = get_dt_obj(death)
+    if birth is False or birth is None:
+        return True
+    if death is False or death is None:
+        return True
     if birth < death:
         return True
     return False
 
-def US15(birth, marriage):
+def US02(birth, marriage):
     '''
     This function checks for birth before marriage
     Args:
@@ -194,10 +198,13 @@ def US15(birth, marriage):
     Returns:
         True/False: True if the birth comes before the marriage date, False if not.
     '''
-    if birth is None:
-        return False
-    if marriage is None:
-        return False
+    if type(birth) == str and type(marriage) == str:
+        birth = get_dt_obj(birth)
+        marriage = get_dt_obj(marriage)
+    if birth is False or birth is None:
+        return True
+    if marriage is False or marriage is None:
+        return True
     if birth < marriage:
         return True
     return False
