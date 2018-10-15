@@ -192,34 +192,43 @@ def US11(indi_id):
     if len(spouse_list) <= 1:
         return True
     for marr in spouse_list:
-        marr_indi = db.indis.find_one({"_id": marr})
-        marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : marr}, {"Husband ID": indi_id}]}]})
+        marr_fam = db.fams.find_one({"_id": marr})
+        if marr_fam["Wife ID"] == indi_id:
+            marr_indi = db.indis.find_one({'_id': marr_fam['Husband ID']})
+        else:
+            marr_indi = db.indis.find_one({'_id': marr_fam["Wife ID"]})
         for other_marr in spouse_list:
             if other_marr == marr:
                 continue
-            other_marr_indi = db.indis.find_one({"_id": other_marr})
-            other_marr_fam = db.fams.find_one({"$or": [{"$and": [{"Husband ID" : other_marr}, {"Wife ID": indi_id}]}, {"$and": [{"Wife ID" : other_marr}, {"Husband ID": indi_id}]}]})
-            try:
+
+            other_marr_fam = db.fams.find_one({"_id": other_marr})
+            if other_marr_fam["Wife ID"] == indi_id:
+                other_marr_indi = db.indis.find_one({'_id': other_marr_fam['Husband ID']})
+            else:
+                other_marr_indi = db.indis.find_one({'_id': other_marr_fam["Wife ID"]})
+            if other_marr_indi is None or other_marr_fam is None:
+
+                continue
+            if other_marr_fam["Married"] is not '':
                 if get_dt_obj(other_marr_fam["Married"]) < get_dt_obj(marr_fam["Married"]):
-                    if other_marr_fam["Divorced"]:
+                    if other_marr_fam["Divorced"] is not "N/A":
                         if get_dt_obj(other_marr_fam["Divorced"]) > get_dt_obj(marr_fam["Married"]):
                             return False
-                    elif other_marr_indi["death"] != "N/A":
+                    elif other_marr_indi["Death"] != "N/A":
                         if get_dt_obj(other_marr_indi["death"]) > get_dt_obj(marr_fam["Married"]):
                             return False
                     else:
                         return False
                 elif get_dt_obj(other_marr_fam["Married"]) > get_dt_obj(marr_fam["Married"]):
-                    if marr_fam["Divorced"]:
+                    if marr_fam["Divorced"] != "N/A":
                         if get_dt_obj(marr_fam["Divorced"]) > get_dt_obj(other_marr_fam["Married"]):
                             return False
-                    elif marr_indi["death"] != "N/A":
+                    elif marr_indi["Death"] != "N/A":
                         if get_dt_obj(marr_indi["death"]) > get_dt_obj(other_marr_fam["Married"]):
                             return False
                     else:
                         return False
-            except:
-                continue
+
     return True
 
 def US37(recent_dead_id):

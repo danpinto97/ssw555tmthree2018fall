@@ -235,9 +235,14 @@ def main():
             recent_death_ids.append(item['_id'])
         if US03(item['dates']['birth'],item['dates']['death']) is False:
             print('ERROR: US03 ', item['_id'],'Birth before death!')
+        if not US11(item['_id']):
+            print('ERROR: US11', item['_id'], 'is/was married to more than one person at a time')
 
     if len(recent_death_ids) > 0:
         print('US36: Recent death ids: ',recent_death_ids)
+
+        for death_id in recent_death_ids:
+            print('US37:Recent survivors of', death_id, 'are:', US37(death_id))
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
@@ -277,10 +282,6 @@ def main():
             print('ERROR: US02 Wife', item['wife']['_id'] ,'birth occurs after marriage!')
         if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']) is False:
             print('ERROR: US06', item['_id'], 'Death of a spouse occurs before marriage date for family!')
-
-    for indiviual in db.indis.find({}):
-        if not US11(indiviual['_id']):
-            print('ERROR: US11', indiviual, 'is/was married to more than one person at a time')
 
     for family in db.fams.find({}):
         if not US04(family['_id']):
