@@ -337,3 +337,44 @@ def US09(birth, mother_death, father_death):
     if birth < updated_date and birth < mother_death:
         return True
     return False
+
+def US12(family_id):
+    family = db.fams.find_one({'_id': family_id})
+    if family['Children'] != 'N / A':
+        if family['Wife ID'] != 'N/A':
+            mom = db.indis.find_one({'_id': family['Wife ID']})
+            for child in family['Children']:
+                child = db.indis.find_one({'_id': child})
+                if relativedelta(get_dt_obj(child['Birthday']), get_dt_obj(mom['Birthday'])).years > 60:
+                    return False
+        if family['Husband ID'] != 'N/A':
+            dad = db.indis.find_one({'_id': family['Husband ID']})
+            for child in family['Children']:
+                child = db.indis.find_one({'_id': child})
+                if relativedelta(get_dt_obj(child['Birthday']), get_dt_obj(dad['Birthday'])).years > 80:
+                    return False
+    return True
+
+def US14(family_id):
+    family = db.fams.find_one({'_id': family_id})
+    if family['Children'] == 'N / A':
+        return True
+    if len(family['Children']) <= 5:
+        return True
+    birthday_list = []
+
+    for child_id in family['Children']:
+        child = db.indis.find_one({'_id': child_id})
+        if child is None:
+            continue
+        if child['Birthday'] != 'Unknown':
+            continue
+        birthday_list.append(child['Birthday'])
+
+    for birthday in birthday_list:
+        count = [i for i, x in enumerate(birthday_list) if x == birthday]
+        if len(count) > 5:
+            return False
+    return True
+
+
