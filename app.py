@@ -288,6 +288,10 @@ def main():
             print('ERROR: US04', family['_id'], 'Marriage not before divorce')
         if not US05(family['_id']):
             print('ERROR: US05', family['_id'], 'Marriage not before death')
+        if not US12(family['_id']):
+            print('ERROR: US12', family['_id'], 'Parent is too old')
+        if not US14(family['_id']):
+            print('ERROR: US14', family['_id'], 'Too many kids born on the same date')
 
 if __name__ == '__main__':
     main()

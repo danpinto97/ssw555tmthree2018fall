@@ -379,7 +379,7 @@ class TestUS09(unittest.TestCase):
         dad = datetime.datetime(2005, 7, 13, 0, 0)
         self.assertEqual(US09(test, None, dad), True)
 
-class TestUS12 (unittest.TestCase):
+class TestUS12(unittest.TestCase):
     test_families = []
     for family in db.fams.find().limit(5):
         test_families.append(family['_id'])
@@ -407,5 +407,21 @@ class TestUS12 (unittest.TestCase):
         test_5 = db.fams.find_one({})
         self.assertEqual(US05(self.test_families[4]), True)
         return
+
+class TestUS14(unittest.TestCase):
+    test_families = []
+    for family in db.fams.find().limit(5):
+        test_families.append(family['_id'])
+    def test_person1(self):
+        test_1 = db.fams.find_one({})
+        self.assertEqual(US05(self.test_families[0]), True)
+        return
+
+    def test_person2(self):
+        test_2 = db.fams.find_one({})
+        self.assertEqual(US05(self.test_families[1]), True)
+        return
+
+
 if __name__ == '__main__':
     unittest.main()
