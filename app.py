@@ -11,9 +11,16 @@ indis = db.indis
 fams = db.fams
 
 #Calculate Age via birthdate
-def calculate_age(birth_date):
+def calculate_age(birth_date: datetime) -> int:
     today = datetime.datetime.now()
     return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+
+def last_thirty(birth_date: datetime) -> bool:
+    today = datetime.datetime.now()
+    time_between = today-birth_date
+    if time_between.days<30:
+        return True
+    return False
 
 def main():
     #Initialize Dictionaries for family and individuals
@@ -22,6 +29,7 @@ def main():
     #Need Arrays for IDs to iterate through list (?) might be wrong, it works right now, but could save on space complexity
     fam_ids = []
     indi_ids = []
+    births_in_last_30 = []
     current = False #False -> indi // True -> Family
     working = False #true after the first individual or family has been read
     #If DEAT, BIRT, MARR, DIV flag is raised, see if next line is a date.
@@ -136,8 +144,11 @@ def main():
                                 date=spl[2] + "-" + spl[3] + "-" + spl[4]
                                 dt = datetime.datetime(year=int(spl[4]), month=date_int[spl[3]], day=int(spl[2]))
                             if looking_date_birth:
+
                                 temp.setBirthday(date)
                                 age = calculate_age(dt)
+                                if last_thirty(dt):
+                                    births_in_last_30.append(temp.getID())
                                 temp.setAge(age)
                             if looking_date_death:
                                 temp.setDeath(date)
@@ -283,6 +294,7 @@ def main():
         if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']) is False:
             print('ERROR: US06', item['_id'], 'Death of a spouse occurs before marriage date for family!')
 
+    print("Recent birth ids: ", births_in_last_30)
     for family in db.fams.find({}):
         if not US04(family['_id']):
             print('ERROR: US04', family['_id'], 'Marriage not before divorce')
@@ -292,6 +304,5 @@ def main():
             print('ERROR: US12', family['_id'], 'Parent is too old')
         if not US14(family['_id']):
             print('ERROR: US14', family['_id'], 'Too many kids born on the same date')
-
 if __name__ == '__main__':
     main()
