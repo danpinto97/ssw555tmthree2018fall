@@ -1,10 +1,6 @@
 import unittest
 import app
-
 import user_stories
-
-
-
 import datetime
 from user_stories import *
 db = client()
@@ -335,7 +331,7 @@ class TestUS05(unittest.TestCase):
 
 class TestUS08(unittest.TestCase):
     def test_false(self):
-        self.assertEqual(US08('@F8@'), False)
+        self.assertEqual(US08('@F9@'), False)
     def test_true(self):
         self.assertEqual(US08('@F4@'), True)
 
@@ -400,7 +396,7 @@ class TestUS12(unittest.TestCase):
 
     def test_person4(self):
         test_4 = db.fams.find_one({})
-        self.assertEqual(US05(self.test_families[3]), True)
+        self.assertEqual(US05(self.test_families[3]), False)
         return
 
     def test_person5(self):
@@ -421,6 +417,23 @@ class TestUS14(unittest.TestCase):
         test_2 = db.fams.find_one({})
         self.assertEqual(US05(self.test_families[1]), True)
         return
+
+class TestUS25(unittest.TestCase):
+    def test_fam_with_duplicate(self):
+        self.assertEqual(US25('@F16@'), True)
+    def test_fam_no_duplicates(self):
+        self.assertEqual(US25('@F4@'), False)
+
+class TestUS29(unittest.TestCase):
+    def test_na(self):
+        #Alive is false but no death date is present
+        self.assertEqual(US29('False','N/A'), False)
+    def test_unknown(self):
+        #Alive is true should always return False
+        self.assertEqual(US29('True','Unknown'), False)
+    def test_real_date(self):
+        #Alive is false and death date is present
+        self.assertEqual(US29('False','8-MAR-2018'), True)
 
 
 if __name__ == '__main__':

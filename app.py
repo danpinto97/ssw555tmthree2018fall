@@ -233,10 +233,11 @@ def main():
 
 
     recent_death_ids = []
+    all_death_ids = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
-            'dates':{'birth':'$Birthday', 'death': '$Death'}}}
+            'dates':{'birth':'$Birthday', 'death': '$Death', 'alive' : '$Alive'}}}
     ]):
         if US07(item['dates']['birth'],item['dates']['death']):
             print('ERROR: US07 ', item['_id'], 'older than 150 years!')
@@ -248,12 +249,20 @@ def main():
             print('ERROR: US03 ', item['_id'],'Birth before death!')
         if not US11(item['_id']):
             print('ERROR: US11', item['_id'], 'is/was married to more than one person at a time')
+        if US29(item['dates']['alive'],item['dates']['death']):
+            all_death_ids.append(item['_id'])
 
     if len(recent_death_ids) > 0:
         print('US36: Recent death ids: ',recent_death_ids)
 
         for death_id in recent_death_ids:
             print('US37:Recent survivors of', death_id, 'are:', US37(death_id))
+
+    if len(all_death_ids) > 0:
+        print('US29: All death ids: ',all_death_ids)
+    else:
+        print('US29: No deaths found at all!')
+
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
@@ -304,5 +313,7 @@ def main():
             print('ERROR: US12', family['_id'], 'Parent is too old')
         if not US14(family['_id']):
             print('ERROR: US14', family['_id'], 'Too many kids born on the same date')
+        if US25(family['_id']):
+            print('ERROR: US25 Family', family['_id'], 'contains people with the same name and birthdate!')
 if __name__ == '__main__':
     main()

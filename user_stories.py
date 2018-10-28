@@ -381,4 +381,26 @@ def US14(family_id):
             return False
     return True
 
+def US25(family_id):
+    '''This function checks that there are unique first names in a family; that is that no two people appear with the
+     same name and birthdate in a family. Returns True if so, otherwise returns False.'''
+    info = {}
+    for child in db.fams.find_one({'_id' : family_id})['Children'].split(' '):
+        if child == 'N':
+            return False
+        child_data = db.indis.find_one({'_id': child})
+        try:
+            if info[child_data['Name']] == child_data['Birthday']:
+                return True
+        except KeyError:
+            #if name hasn't been found yet
+            info[child_data['Name']] = child_data['Birthday']
+    return False
 
+def US29(alive,death_date):
+    '''
+    Checks if alive is True and death date exists or not; if both true s, returns True and appends a list of id's in app.py
+    '''
+    if alive == 'False' and get_dt_obj(death_date) != False:
+        return True
+    return False
