@@ -404,3 +404,17 @@ def US29(alive,death_date):
     if alive == 'False' and get_dt_obj(death_date) != False:
         return True
     return False
+
+def US35(birth: datetime) -> bool:
+    #Returns True if less than 30 days
+    #False otherwise
+    today = datetime.datetime.now()
+    time_between = today-birth
+    if time_between.days<30:
+        return True
+    return False
+
+def US27(birth_date: datetime) -> int:
+    #returns age
+    today = datetime.datetime.now()
+    return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))

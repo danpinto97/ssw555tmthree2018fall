@@ -10,17 +10,7 @@ db = client()
 indis = db.indis
 fams = db.fams
 
-#Calculate Age via birthdate
-def calculate_age(birth_date: datetime) -> int:
-    today = datetime.datetime.now()
-    return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
 
-def last_thirty(birth_date: datetime) -> bool:
-    today = datetime.datetime.now()
-    time_between = today-birth_date
-    if time_between.days<30:
-        return True
-    return False
 
 def main():
     #Initialize Dictionaries for family and individuals
@@ -146,9 +136,11 @@ def main():
                             if looking_date_birth:
 
                                 temp.setBirthday(date)
-                                age = calculate_age(dt)
-                                if last_thirty(dt):
+                                age = US27(dt)
+                                if US35(dt):
                                     births_in_last_30.append(temp.getID())
+                                if age < 0:
+                                    print("ERROR: Negative Age")
                                 temp.setAge(age)
                             if looking_date_death:
                                 temp.setDeath(date)
