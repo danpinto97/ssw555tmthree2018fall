@@ -16,10 +16,24 @@ def get_dt_obj(string_date):
     :param string_date: form of "03-MAR-1990"
     :return: datetime object or False in the case that the date is not known
     """
-    if string_date == '' or string_date == 'N/A' or string_date == 'Unknown':
-        #Also return true for cases where date is unknown
+    try:
+        if string_date == '' or string_date == 'N/A' or string_date == 'Unknown':
+            #Also return true for cases where date is unknown
+            return False
+        return datetime.datetime.strptime(string_date, '%d-%b-%Y')
+    except:
         return False
-    return datetime.datetime.strptime(string_date, '%d-%b-%Y')
+
+def get_dt_obj_v2(string_date):
+    if string_date == 'N/A' or string_date == 'Unknown':
+        return None
+    str_to_int = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6, 'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12}
+    spl = string_date.split("-")
+    day = int(spl[0])
+    month = int(str_to_int[spl[1]])
+    year = int(spl[2])
+    return datetime.datetime(year=year, month=month, day=day)
+
 
 def US01(date):
     '''
@@ -111,18 +125,21 @@ def US05(family_id):
     :param family_id:
     :return: True if marriage happened before death of either spouse. False if not
     """
-    family = db.fams.find_one({'_id': family_id})
-    if family['Married'] == "":
+    try:
+        family = db.fams.find_one({'_id': family_id})
+        if family['Married'] == "":
+            return True
+        husband = db.indis.find_one({'_id': family['Husband ID']})
+        wife = db.indis.find_one({'_id': family['Wife ID']})
+        if husband['Death'] != 'N/A':
+            if get_dt_obj(husband['Death']) < get_dt_obj(family['Married']):
+                return False
+        if wife['Death'] != 'N/A':
+            if get_dt_obj(wife['Death']) < get_dt_obj(family['Married']):
+                return False
         return True
-    husband = db.indis.find_one({'_id': family['Husband ID']})
-    wife = db.indis.find_one({'_id': family['Wife ID']})
-    if husband['Death'] != 'N/A':
-        if get_dt_obj(husband['Death']) < get_dt_obj(family['Married']):
-            return False
-    if wife['Death'] != 'N/A':
-        if get_dt_obj(wife['Death']) < get_dt_obj(family['Married']):
-            return False
-    return True
+    except:
+        return False
 
 def US03(birth, death):
     '''
@@ -305,10 +322,11 @@ def US42(date):
     Returns:
         True/False: True if date is acceptable format, False otherwise.
     '''
+    str_to_int = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6, 'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12}
     try:
         spl = date.split("-")
         day = int(spl[0])
-        month = int(spl[1])
+        month = int(str_to_int[spl[1]])
         year = int(spl[2])
         test = datetime.datetime(year=year, month=month, day=day)
     except:

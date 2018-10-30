@@ -124,15 +124,19 @@ def main():
                                 "NOV": 11,
                                 "DEC": 12,
                             }
-                            if len(spl) == 3:
-                                date=spl[2]
-                                dt = datetime.datetime(year=int(spl[2]), month=1, day=1)
-                            if len(spl) == 4:
-                                date=spl[2] + "-" + spl[3]
-                                dt = datetime.datetime(year=int(spl[3]), month=date_int[spl[2]], day=1)
-                            if len(spl) == 5:
-                                date=spl[2] + "-" + spl[3] + "-" + spl[4]
-                                dt = datetime.datetime(year=int(spl[4]), month=date_int[spl[3]], day=int(spl[2]))
+                            try:
+                                if len(spl) == 3:
+                                    date=spl[2]
+                                    dt = datetime.datetime(year=int(spl[2]), month=1, day=1)
+                                if len(spl) == 4:
+                                    date=spl[2] + "-" + spl[3]
+                                    dt = datetime.datetime(year=int(spl[3]), month=date_int[spl[2]], day=1)
+                                if len(spl) == 5:
+                                    date=spl[2] + "-" + spl[3] + "-" + spl[4]
+                                    dt = datetime.datetime(year=int(spl[4]), month=date_int[spl[3]], day=int(spl[2]))
+                            except:
+                                dt = datetime.datetime(year=1960, month=1, day=1)
+                                print("US42: INVALID DATE: ", " ".join(spl[2:]))
                             if looking_date_birth:
 
                                 temp.setBirthday(date)
@@ -223,7 +227,8 @@ def main():
                 current_list_for_ptable.clear()
     print(fam_ptable)
 
-
+    death_dates = {}
+    birth_dates = {}
     recent_death_ids = []
     all_death_ids = []
     for item in db.indis.aggregate([
@@ -243,6 +248,10 @@ def main():
             print('ERROR: US11', item['_id'], 'is/was married to more than one person at a time')
         if US29(item['dates']['alive'],item['dates']['death']):
             all_death_ids.append(item['_id'])
+        death_dates[item['_id']] = item['dates']['death']
+        birth_dates[item['_id']] = item['dates']['birth']
+
+
 
     if len(recent_death_ids) > 0:
         print('US36: Recent death ids: ',recent_death_ids)
@@ -269,7 +278,7 @@ def main():
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
-        {'$project' : {'stuff': {'divorce': '$Married', 'marriage': '$Divorced', 'husband_id' : '$Husband ID', 'wife_id' : '$Wife ID'}}},
+        {'$project' : {'stuff': {'divorce': '$Married', 'marriage': '$Divorced', 'husband_id' : '$Husband ID', 'wife_id' : '$Wife ID', 'children': '$Children'}}},
         {'$lookup' :
              {
                  'from' : 'indis',
@@ -294,8 +303,20 @@ def main():
             print('ERROR: US02 Wife', item['wife']['_id'] ,'birth occurs after marriage!')
         if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']) is False:
             print('ERROR: US06', item['_id'], 'Death of a spouse occurs before marriage date for family!')
+        wife_death = get_dt_obj_v2(item['wife']['Death'])
+        husb_death = get_dt_obj_v2(item['husband']['Death'])
+        children = item['stuff']['children'].split()
 
-    print("Recent birth ids: ", births_in_last_30)
+        for child in children:
+            if '@' in child:
+                if US42(birth_dates[child]):
+                    birth = get_dt_obj(birth_dates[child])
+                    if US09(birth, wife_death, husb_death):
+                        pass
+                    else:
+                        print('ERROR: US09: ', child, " born after parents.")
+    if len(births_in_last_30) > 0:
+        print("US35: Recent birth ids: ", births_in_last_30)
     for family in db.fams.find({}):
         if not US04(family['_id']):
             print('ERROR: US04', family['_id'], 'Marriage not before divorce')
