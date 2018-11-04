@@ -47,12 +47,18 @@ def main():
 
                             if working:
                                 if current:
-                                    familes[current_id] = temp
-                                    fam_ids.append(current_id)
+                                    if current_id in familes:
+                                        print("ERROR: US22 DUPLICATE FAMILY ID: "+current_id)
+                                    else:
+                                        familes[current_id] = temp
+                                        fam_ids.append(current_id)
                                     temp = None
                                 else:
-                                    indis[current_id] = temp
-                                    indi_ids.append(current_id)
+                                    if current_id in indis:
+                                        print("ERROR: US22 DUPLICATE INDIVIDUAL ID: "+current_id)
+                                    else:
+                                        indis[current_id] = temp
+                                        indi_ids.append(current_id)
                                     temp = None
                             current_id = spl[1]
                             working = True
@@ -231,10 +237,15 @@ def main():
     birth_dates = {}
     recent_death_ids = []
     all_death_ids = []
+    unique_name_bdays = []
+    living_married = set([])
+    upcoming_births = []
+    upcoming_anniversies = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
-            'dates':{'birth':'$Birthday', 'death': '$Death', 'alive' : '$Alive'}}}
+            'dates':{'birth':'$Birthday', 'death': '$Death', 'alive' : '$Alive'},
+            'name': '$Name', 'gender': '$Gender', 'spouse': '$Spouse'}}
     ]):
         if US07(item['dates']['birth'],item['dates']['death']):
             print('ERROR: US07 ', item['_id'], 'older than 150 years!')
@@ -250,6 +261,14 @@ def main():
             all_death_ids.append(item['_id'])
         death_dates[item['_id']] = item['dates']['death']
         birth_dates[item['_id']] = item['dates']['birth']
+        name_birth = item['name']+item['dates']['birth']
+        if name_birth in unique_name_bdays:
+            print('ERROR: US23 DUPLICATE NAME BIRTHDAY: '+name_birth)
+        else:
+            unique_name_bdays.append(name_birth)
+
+        if US38(item['dates']['birth']):
+            upcoming_births.append(item['_id'])
 
 
 
@@ -306,6 +325,13 @@ def main():
         wife_death = get_dt_obj_v2(item['wife']['Death'])
         husb_death = get_dt_obj_v2(item['husband']['Death'])
         children = item['stuff']['children'].split()
+        if US21(item) == False:
+            print("ERROR: US21 Incorrect gender roles in family: "+item['_id'])
+        if US30(item) == True:
+            living_married.add(item['husband']['_id'])
+            living_married.add(item['wife']['_id'])
+        if US39(item['stuff']['divorce']):
+            upcoming_anniversies.append(item['_id'])
 
         for child in children:
             if '@' in child:
@@ -328,5 +354,11 @@ def main():
             print('ERROR: US14', family['_id'], 'Too many kids born on the same date')
         if US25(family['_id']):
             print('ERROR: US25 Family', family['_id'], 'contains people with the same name and birthdate!')
+    if len(living_married)>0:
+        print("US30: Living and married: ",living_married)
+    if len(upcoming_anniversies)>0:
+        print("US39: Anniverseries coming up within next 30 days: ", upcoming_anniversies)
+    if len(upcoming_births)>0:
+        print("US38: Birthdays coming up within next 30 days: ", upcoming_births)
 if __name__ == '__main__':
     main()

@@ -343,7 +343,7 @@ class TestUS10(unittest.TestCase):
 
 class TestUS42(unittest.TestCase):
     def test_date_1(self):
-        self.assertEqual(US42("04-12-1998"), True)
+        self.assertEqual(US42("04-DEC-1998"), True)
     def test_date_2(self):
         self.assertEqual(US42("07-13-1995"), False)
     def test_date_3(self):
@@ -435,6 +435,73 @@ class TestUS29(unittest.TestCase):
         #Alive is false and death date is present
         self.assertEqual(US29('False','8-MAR-2018'), True)
 
+class TestUS22(unittest.TestCase):
+    def test_all_unique(self):
+        indivs = []
+        for i in range(0, 10):
+            indiv = {
+                '_id': '@I'+str(i)+'@',
+                'name': 'Place Holder',
+                'birth': '01 JAN 1998'
+            }
+            indivs.append(indiv)
+        self.assertEqual(US22(indivs), True)
 
+    def test_all_not_unique(self):
+        indivs = []
+        temp = {'_id': '@I7@', 'name': 'Duplicate Id', 'birth': '01 APR 2018'}
+        indivs.append(temp)
+        for i in range(0, 10):
+            indiv = {
+                '_id': '@I'+str(i)+'@',
+                'name': 'Place Holder',
+                'birth': '01 JAN 1998'
+            }
+            indivs.append(indiv)
+        self.assertEqual(US22(indivs), False)
+
+class TestUS23(unittest.TestCase):
+    def test_all_not_unique(self):
+        indivs = []
+        indiv1 = {
+                    '_id': '@I1@',
+                    'name': 'Place Holder',
+                    'birth': '01 JAN 1998'
+                }
+        indiv2 = {
+                    '_id': '@I2@',
+                    'name': 'Place Holder',
+                    'birth': '01 JAN 1998'
+                }
+        indivs.extend([indiv1, indiv2])
+        self.assertEqual(US23(indivs), False)
+    def test_all_unique(self):
+        indivs = []
+        indiv1 = {
+                    '_id': '@I1@',
+                    'name': 'Place Holder-ORIG',
+                    'birth': '01 JAN 1998'
+                }
+        indiv2 = {
+                    '_id': '@I2@',
+                    'name': 'Place Holder',
+                    'birth': '01 JAN 1998'
+                }
+        indivs.extend([indiv1, indiv2])
+        self.assertEqual(US23(indivs), True)
+class TestUS21(unittest.TestCase):
+    def test_correct(self):
+        fam = {'wife': {'Gender': 'F'}, 'husband': {'Gender': 'M'}}
+        self.assertEqual(US21(fam), True)
+    def test_incorrect(self):
+        fam = {'wife': {'Gender': 'F'}, 'husband': {'Gender': 'F'}}
+        self.assertEqual(US21(fam), False)
+class TestUS30(unittest.TestCase):
+    def test_living_married(self):
+        fam = {'stuff': {'marriage': 'N/A', 'divorce': '01 JAN 1990'}, 'wife': {'Alive': 'True'}, 'husband': {'Alive': 'True'}}
+        self.assertEqual(US30(fam), True)
+    def test_not_living_married(self):
+        fam = {'stuff': {'marriage': 'N/A', 'divorce': '01 JAN 1990'}, 'wife': {'Alive': 'False'}, 'husband': {'Alive': 'True'}}
+        self.assertEqual(US30(fam), False)
 if __name__ == '__main__':
     unittest.main()

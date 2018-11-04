@@ -1,445 +1,97 @@
-#James Spaniak
-0 HEAD
-1 SOUR Geni.com
-2 VERS 1.0
-1 DATE 29 AUG 2018
-2 TIME 21:17:40
-1 SUBM @S6000000081764934924@
-1 GEDC
-2 VERS 5.5.1
-2 FORM LINEAGE-LINKED
-1 CHAR UTF-8
-0 @I6000000081764934924@ INDI
-1 NAME John /Smith/
-2 GIVN John
-2 SURN Smith
-1 SEX M
-1 BIRT
-1 ADDR fuzzyzocks@gmail.com
-2 EMAIL fuzzyzocks@gmail.com
-1 FAMC @F6000000081765016861@
-1 RFN geni:6000000081764934924
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 20:57:45
-0 @I6000000081764947910@ INDI
-1 NAME Eileen /Smith/
-2 GIVN Eileen
-2 SURN Youknow
-1 SEX F
-1 BIRT
-2 DATE 4 JAN 1970
-test
-Eileen/Smith/
-2 ADDR Independence
-3 CONT Kansas United States
-3 CITY Independence
-3 STAE Kansas
-3 CTRY United States
-1 DEAT
-2 DATE 6 JAN 2018
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 FAMC @F6000000081764012545@
-1 FAMS @F6000000081765016861@
-1 RFN geni:6000000081764947910
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:00:44
-0 @I6000000081765016854@ INDI
-1 NAME James Anthony /Smith/
-2 GIVN James Anthony
-2 SURN Smith
-1 SEX M
-1 BIRT
-2 DATE 7 OCT 1970
-test
-JamesAnthony/Smith/
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 RESI
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 FAMC @F6000000081765002915@
-1 FAMS @F6000000081764992957@
-1 FAMS @F6000000081765016861@
-1 RFN geni:6000000081765016854
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 20:59:17
-0 @I6000000081764012539@ INDI
-1 NAME Tyler /Youknow/
-2 GIVN Tyler
-2 SURN Youknow
-1 SEX M
-1 BIRT
-2 DATE 19 JUN 1945
-test
-Tyler/Youknow/
-2 ADDR Vermont United States
-3 STAE Vermont
-3 CTRY United States
-1 RESI
-2 ADDR Vermont United States
-3 STAE Vermont
-3 CTRY United States
-1 FAMS @F6000000081764012545@
-1 RFN geni:6000000081764012539
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:11:02
-0 @I6000000081765037935@ INDI
-1 NAME Bora /Youknow/
-2 GIVN Bora
-2 SURN Wild
-1 SEX F
-1 BIRT
-2 DATE 22 APR 1942
-test
-Bora/Youknow/
-2 ADDR Russia
-3 CTRY Russia
-1 RESI
-2 ADDR Russia
-3 CTRY Russia
-1 FAMS @F6000000081764012545@
-1 RFN geni:6000000081765037935
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:12:05
-0 @I6000000081764992951@ INDI
-1 NAME Bora /Smith/
-2 GIVN Bora
-2 SURN Comppy
-1 SEX F
-1 BIRT
-2 DATE 4 DEC 1973
-test
-Bora/Smith/
-2 ADDR California United States
-3 STAE California
-3 CTRY United States
-1 RESI
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 FAMS @F6000000081764992957@
-1 RFN geni:6000000081764992951
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:05:52
-0 @I6000000081763766597@ INDI
-1 NAME Lyfe /Smith/
-2 GIVN Lyfe
-2 SURN Smith
-1 SEX F
-1 BIRT
-2 DATE 24 SEP 2008
-test
-Lyfe/Smith/
-2 ADDR Coffeyville
-3 CONT Kansas United States
-3 CITY Coffeyville
-3 STAE Kansas
-3 CTRY United States
-1 RESI
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 FAMC @F6000000081764992957@
-1 RFN geni:6000000081763766597
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:07:35
-0 @I6000000081764512338@ INDI
-1 NAME Rose /Smith/
-2 GIVN Rose
-2 SURN Hyga
-1 SEX F
-1 BIRT
-2 DATE 17 AUG 1955
-test
-Rose/Smith/
-2 ADDR Italy
-3 CTRY Italy
-1 DEAT
-2 DATE 27 SEP 2001
-2 ADDR Italy
-3 CTRY Italy
-1 FAMC @F6000000081764288518@
-1 FAMS @F6000000081765002915@
-1 RFN geni:6000000081764512338
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:09:09
-0 @I6000000081765002910@ INDI
-1 NAME Willy /Smith/
-2 GIVN Willy
-2 SURN Smith
-1 SEX M
-1 BIRT
-2 DATE 22 JUN 1950
-test
-Willy/Smith/
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 FAMS @F6000000081765002915@
-1 RFN geni:6000000081765002910
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:02:53
-0 @I6000000081764288508@ INDI
-1 NAME Kyle /Hyga/
-2 GIVN Kyle
-2 SURN Hyga
-1 SEX M
-1 BURI
-2 PLAC Africa
-2 ADDR
-1 BIRT
-2 DATE 4 AUG 1920
-test
-Kyle/Hyga/
-2 PLAC Africa
-2 ADDR
-1 DEAT
-2 DATE 29 MAY 2010
-2 PLAC Africa
-2 ADDR
-1 FAMS @F6000000081764288518@
-1 RFN geni:6000000081764288508
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:13:14
-0 @I6000000081765135846@ INDI
-1 NAME Momo /Hyga/
-2 GIVN Momo
-2 SURN Yaaaa
-1 SEX F
-1 BIRT
-2 DATE 15 AUG 1919
-test
-Momo/Hyga/
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 DEAT
-2 DATE 5 JUN 2010
-2 ADDR Philadelphia
-3 CONT Pennsylvania United States
-3 CITY Philadelphia
-3 STAE Pennsylvania
-3 CTRY United States
-1 FAMS @F6000000081764288518@
-1 RFN geni:6000000081765135846
-1 CHAN
-2 DATE 29 AUG 2018
-3 TIME 21:14:52
-0 @F6000000081765016861@ FAM
-1 WIFE @I6000000081764947910@
-1 HUSB @I6000000081765016854@
-1 CHIL @I6000000081764934924@
-0 @F6000000081764012545@ FAM
-1 HUSB @I6000000081764012539@
-1 WIFE @I6000000081765037935@
-1 CHIL @I6000000081764947910@
-0 @F6000000081764992957@ FAM
-1 WIFE @I6000000081764992951@
-1 HUSB @I6000000081765016854@
-1 CHIL @I6000000081763766597@
-0 @F6000000081765002915@ FAM
-1 WIFE @I6000000081764512338@
-1 HUSB @I6000000081765002910@
-1 CHIL @I6000000081765016854@
-1 MARR
-2 DATE 15 SEP 20
-0 @F6000000081764288518@ FAM
-1 HUSB @I6000000081764288508@
-1 WIFE @I6000000081765135846@
-1 CHIL @I6000000081764512338@
+ERROR: Negative Age
+US42: INVALID DATE:  10 OCT 2010y
+Individuals:
++-------+----------------+--------+-------------+-----+-------+-------------+-------+-------------+
+|   ID  |      Name      | Gender |   Birthday  | Age | Alive |    Death    | Child |    Spouse   |
++-------+----------------+--------+-------------+-----+-------+-------------+-------+-------------+
+|  @I1@ |  US01/Smith/   |   M    | 15-OCT-2020 |  -2 |  True |     N/A     |  @F1@ |             |
+|  @I2@ |  US03/Smith/   |   M    |  7-AUG-2001 |  17 | False |  5-MAY-2000 |  @F2@ |     @F1@    |
+|  @I3@ |  US02/Black/   |   F    | 14-SEP-1980 |  38 |  True |     N/A     |       |     @F1@    |
+|  @I4@ |  US04/Smith/   |   M    | 13-JUL-2005 |  13 |  True |     N/A     |  @F1@ |     @F3@    |
+|  @I5@ | US04(1)/White/ |   F    | 16-JUL-1980 |  38 |  True |     N/A     |       |     @F3@    |
+|  @I6@ |  US05/Smith/   |   F    | 23-NOV-1980 |  37 |  True |     N/A     |  @F1@ |     @F4@    |
+|  @I7@ | US05(1)/Lock/  |   M    |  6-AUG-1970 |  48 | False | 15-JUL-2005 |       |     @F4@    |
+|  @I8@ |  US07/Smith/   |   M    |  9-MAY-1990 |  28 |  True |     N/A     |  @F5@ |     @F2@    |
+|  @I9@ | US36/37/Oden/  |   F    | 10-JUN-1940 |  78 | False | 28-OCT-2018 |       |     @F2@    |
+| @I10@ |  US06/Smith/   |   M    | 16-SEP-1770 | 248 | False | 18-MAY-2000 |  @F2@ |     @F6@    |
+| @I11@ | US06(1)/Blue/  |   F    |  7-JUL-1970 |  48 |  True |     N/A     |       |     @F6@    |
+| @I12@ |  US13/Smith/   |   M    | 16-JUL-1970 |  48 |  True |     N/A     |  @F2@ |     @F7@    |
+| @I13@ | US13(1)/Need/  |   F    | 13-JUL-1985 |  33 |  True |     N/A     |  @F8@ |     @F7@    |
+| @I14@ | US13(2)/Smith/ |   F    | 12-JUN-2000 |  18 |  True |     N/A     |  @F7@ |             |
+| @I15@ | US13(3)/Smith/ |   M    | 10-JUL-2000 |  18 |  True |     N/A     |  @F7@ |             |
+| @I16@ |  US08/Smith/   |   M    |  9-MAY-1985 |  33 |  True |     N/A     |  @F2@ |     @F9@    |
+| @I17@ | US08(1)/Durk/  |   F    |  6-MAY-1985 |  33 |  True |     N/A     |       |     @F9@    |
+| @I18@ | US08(2)/Smith/ |   M    |  9-JUN-1995 |  23 |  True |     N/A     |  @F9@ |             |
+| @I19@ |  US09/Smith/   |   M    | 18-SEP-1983 |  35 | False | 16-SEP-2000 |  @F2@ |    @F10@    |
+| @I20@ | US09(1)/Huld/  |   F    |   Unknown   |  0  |  True |     N/A     |       |    @F10@    |
+| @I21@ | US09(2)/Smith/ |   F    | 15-DEC-2005 |  12 |  True |     N/A     | @F10@ |             |
+| @I22@ |     /Need/     |   M    |   Unknown   |  0  |  True |     N/A     |       |     @F8@    |
+| @I23@ |     /Need/     |   F    |   Unknown   |  0  |  True |     N/A     |       |     @F8@    |
+| @I24@ |  US10/Smith/   |   F    | 15-NOV-2005 |  12 |  True |     N/A     |  @F2@ |    @F11@    |
+| @I25@ |  US10(1)/Foh/  |   M    | 12-DEC-2001 |  16 |  True |     N/A     |       |    @F11@    |
+| @I26@ |  US11/Smith/   |   M    | 16-NOV-1980 |  37 |  True |     N/A     |  @F2@ | @F12@ @F13@ |
+| @I27@ |  US11(1)/Low/  |   F    | 14-OCT-1980 |  38 |  True |     N/A     |       | @F13@ @F14@ |
+| @I28@ | US11(2)/Smith/ |   F    |   Unknown   |  0  |  True |     N/A     |       |    @F12@    |
+| @I29@ |    /Smith/     |   M    |   Unknown   |  0  |  True |     N/A     |       |    @F14@    |
+| @I30@ |  US22/Smith/   |   M    | 10-NOV-1900 | 117 |  True |     N/A     |       |     @F5@    |
+| @I31@ |   US12/Red/    |   F    |  8-MAY-1900 | 118 |  True |     N/A     |       |     @F5@    |
+| @I32@ |  US14/Smith/   |   M    | 14-AUG-1970 |  48 |  True |     N/A     |  @F5@ |    @F15@    |
+| @I33@ |  US23/Orange/  |   F    |   Unknown   |  0  |  True |     N/A     |       |    @F15@    |
+| @I34@ | US14(1)/Smith/ |   M    |  1-JAN-2005 |  13 |  True |     N/A     | @F15@ |             |
+| @I35@ | US14(2)/Smith/ |   M    |  1-JAN-2005 |  13 |  True |     N/A     | @F15@ |             |
+| @I36@ | US14(3)/Smith/ |   M    |  1-JAN-2005 |  13 |  True |     N/A     | @F15@ |             |
+| @I37@ | US14(4)/Smith/ |   M    |  1-JAN-2005 |  13 |  True |     N/A     | @F15@ |             |
+| @I38@ | US14(5)/Smith/ |   M    |  1-JAN-2005 |  13 |  True |     N/A     | @F15@ |             |
+| @I39@ | US14(6)/Smith/ |   M    |  1-JAN-2005 |  13 |  True |     N/A     | @F15@ |             |
+| @I40@ | US23(2)/Smith/ |   M    |  9-MAY-1980 |  38 | False | 12-JUN-2012 |  @F5@ |    @F16@    |
+| @I41@ | US23(1)/Smith/ |   F    |   Unknown   |  0  |  True |     N/A     |       |    @F16@    |
+| @I42@ |  US25/Smith/   |   M    |  1-JAN-2000 |  18 |  True |     N/A     | @F16@ |             |
+| @I43@ |  US25/Smith/   |   M    |  1-JAN-2000 |  18 |  True |     N/A     | @F16@ |             |
++-------+----------------+--------+-------------+-----+-------+-------------+-------+-------------+
 
-
-
-
-Individuals: 
-ID: @I6000000081764934924@
-Name: John/Smith/
-Gender: M
-Birthday: Unknown
-Age: 0
-Alive: True
-Death: N/A
-Child: @F6000000081765016861@
-Spouse: 
-
-
-ID: @I6000000081764947910@
-Name: Eileen/Smith/
-Gender: F
-Birthday: 4-JAN-1970
-Age: 48
-Alive: False
-Death: 6-JAN-2018
-Child: @F6000000081764012545@
-Spouse: @F6000000081765016861@
-
-
-ID: @I6000000081765016854@
-Name: JamesAnthony/Smith/
-Gender: M
-Birthday: 7-OCT-1970
-Age: 47
-Alive: True
-Death: N/A
-Child: @F6000000081765002915@
-Spouse: @F6000000081764992957@ @F6000000081765016861@
-
-
-ID: @I6000000081764012539@
-Name: Tyler/Youknow/
-Gender: M
-Birthday: 19-JUN-1945
-Age: 73
-Alive: True
-Death: N/A
-Child: 
-Spouse: @F6000000081764012545@
-
-
-ID: @I6000000081765037935@
-Name: Bora/Youknow/
-Gender: F
-Birthday: 22-APR-1942
-Age: 76
-Alive: True
-Death: N/A
-Child: 
-Spouse: @F6000000081764012545@
-
-
-ID: @I6000000081764992951@
-Name: Bora/Smith/
-Gender: F
-Birthday: 4-DEC-1973
-Age: 44
-Alive: True
-Death: N/A
-Child: 
-Spouse: @F6000000081764992957@
-
-
-ID: @I6000000081763766597@
-Name: Lyfe/Smith/
-Gender: F
-Birthday: 24-SEP-2008
-Age: 9
-Alive: True
-Death: N/A
-Child: @F6000000081764992957@
-Spouse: 
-
-
-ID: @I6000000081764512338@
-Name: Rose/Smith/
-Gender: F
-Birthday: 17-AUG-1955
-Age: 63
-Alive: False
-Death: 27-SEP-2001
-Child: @F6000000081764288518@
-Spouse: @F6000000081765002915@
-
-
-ID: @I6000000081765002910@
-Name: Willy/Smith/
-Gender: M
-Birthday: 22-JUN-1950
-Age: 68
-Alive: True
-Death: N/A
-Child: 
-Spouse: @F6000000081765002915@
-
-
-ID: @I6000000081764288508@
-Name: Kyle/Hyga/
-Gender: M
-Birthday: 4-AUG-1920
-Age: 98
-Alive: False
-Death: 29-MAY-2010
-Child: 
-Spouse: @F6000000081764288518@
-
-
-ID: @I6000000081765135846@
-Name: Momo/Hyga/
-Gender: F
-Birthday: 15-AUG-1919
-Age: 99
-Alive: False
-Death: 5-JUN-2010
-Child: 
-Spouse: @F6000000081764288518@
-
-
-
-
-
-Families: 
-ID: @F6000000081765016861@
-Married: 
-Divorced: N/A
-Husband ID: @I6000000081765016854@
-Husband Name: Eileen/Smith/
-Wife ID: @I6000000081764947910@
-Wife Name: John/Smith/
-Children: @I6000000081764934924@
-
-
-ID: @F6000000081764012545@
-Married: 
-Divorced: N/A
-Husband ID: @I6000000081764012539@
-Husband Name: JamesAnthony/Smith/
-Wife ID: @I6000000081765037935@
-Wife Name: Tyler/Youknow/
-Children: @I6000000081764947910@
-
-
-ID: @F6000000081764992957@
-Married: 
-Divorced: N/A
-Husband ID: @I6000000081765016854@
-Husband Name: Eileen/Smith/
-Wife ID: @I6000000081764992951@
-Wife Name: Bora/Youknow/
-Children: @I6000000081763766597@
-
-
-ID: @F6000000081765002915@
-Married: 15-SEP-20
-Divorced: N/A
-Husband ID: @I6000000081765002910@
-Husband Name: Rose/Smith/
-Wife ID: @I6000000081764512338@
-Wife Name: Lyfe/Smith/
-Children: @I6000000081765016854@
+Families:
++-------+--------------+-------------+------------+----------------+---------+----------------+------------------------------------------+
+|   ID  |   Married    |   Divorced  | Husband ID |  Husband Name  | Wife ID |   Wife Name    |                 Children                 |
++-------+--------------+-------------+------------+----------------+---------+----------------+------------------------------------------+
+|  @F1@ | 12-JUN-1970  |     N/A     |    @I2@    |  US03/Smith/   |   @I3@  |  US02/Black/   |              @I1@ @I4@ @I6@              |
+|  @F2@ |              |     N/A     |    @I8@    |  US07/Smith/   |   @I9@  | US36/37/Oden/  | @I2@ @I10@ @I12@ @I16@ @I19@ @I24@ @I26@ |
+|  @F3@ | 11-JUN-2000  | 12-MAY-1999 |    @I4@    |  US04/Smith/   |   @I5@  | US04(1)/White/ |                  N / A                   |
+|  @F4@ | 10-OCT-2010y |     N/A     |    @I7@    | US05(1)/Lock/  |   @I6@  |  US05/Smith/   |                  N / A                   |
+|  @F5@ |              |     N/A     |   @I30@    |  US22/Smith/   |  @I31@  |   US12/Red/    |             @I8@ @I32@ @I40@             |
+|  @F6@ |  2-FEB-1990  |  7-MAR-2005 |   @I10@    |  US06/Smith/   |  @I11@  | US06(1)/Blue/  |                  N / A                   |
+|  @F7@ |              |     N/A     |   @I12@    |  US13/Smith/   |  @I13@  | US13(1)/Need/  |               @I14@ @I15@                |
+|  @F8@ |              |     N/A     |   @I22@    |     /Need/     |  @I23@  |     /Need/     |                  @I13@                   |
+|  @F9@ | 11-JUL-2000  |     N/A     |   @I16@    |  US08/Smith/   |  @I17@  | US08(1)/Durk/  |                  @I18@                   |
+| @F10@ |              |     N/A     |   @I19@    |  US09/Smith/   |  @I20@  | US09(1)/Huld/  |                  @I21@                   |
+| @F11@ | 15-NOV-2017  |     N/A     |   @I25@    |  US10(1)/Foh/  |  @I24@  |  US10/Smith/   |                  N / A                   |
+| @F12@ | 15-SEP-2000  |     N/A     |   @I26@    |  US11/Smith/   |  @I28@  | US11(2)/Smith/ |                  N / A                   |
+| @F13@ | 26-NOV-2000  | 11-OCT-2007 |   @I26@    |  US11/Smith/   |  @I27@  |  US11(1)/Low/  |                  N / A                   |
+| @F14@ | 15-JUN-2014  |     N/A     |   @I29@    |    /Smith/     |  @I27@  |  US11(1)/Low/  |                  N / A                   |
+| @F15@ | 10-SEP-1990  |     N/A     |   @I32@    |  US14/Smith/   |  @I33@  |  US23/Orange/  |   @I34@ @I35@ @I36@ @I37@ @I38@ @I39@    |
+| @F16@ | 11-JUL-2000  |     N/A     |   @I40@    | US23(2)/Smith/ |  @I41@  | US23(1)/Smith/ |               @I42@ @I43@                |
++-------+--------------+-------------+------------+----------------+---------+----------------+------------------------------------------+
+ERROR: US01  @I1@ Birthday or Death past current date!
+ERROR: US03  @I2@ Birth before death!
+ERROR: US07  @I10@ older than 150 years!
+ERROR: US11 @I26@ is/was married to more than one person at a time
+ERROR: US03  @I50@ Birth before death!
+US36: Recent death ids:  ['@I9@']
+US37: Recent survivors of @I9@ are: ['@F2@']
+US29: All death ids:  ['@I2@', '@I7@', '@I9@', '@I10@', '@I19@', '@I40@', '@I50@']
+ERROR: US10  @F1@ marriage occurs before the age of 14 for wife or husband!
+ERROR: US10  @F3@ marriage occurs before the age of 14 for wife or husband!
+ERROR: US08 @I18@ Birth occurs before parent's marriage!
+ERROR: US10  @F11@ marriage occurs before the age of 14 for wife or husband!
+ERROR: US08 @I42@ Birth occurs before parent's marriage!
+ERROR: US09:  @I1@  born after parents.
+ERROR: US09:  @I4@  born after parents.
+ERROR: US02 Husband @I4@ occurs after marriage!
+ERROR: US06 @F6@ Death of a spouse occurs before marriage date for family!
+ERROR: US09:  @I21@  born after parents.
+US35: Recent birth ids:  ['@I1@']
+ERROR: US12 @F2@ Parent is too old
+ERROR: US04 @F3@ Marriage not before divorce
+ERROR: US05 @F4@ Marriage not before death
+ERROR: US12 @F5@ Parent is too old
+ERROR: US14 @F15@ Too many kids born on the same date
+ERROR: US25 Family @F16@ contains people with the same name and birthdate!

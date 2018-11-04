@@ -436,3 +436,76 @@ def US27(birth_date: datetime) -> int:
     #returns age
     today = datetime.datetime.now()
     return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+
+def US22(individuals):
+    #returns True if all contain unique _id's; else False
+    unique_ids = []
+    for item in individuals:
+        temp = item['_id']
+        if temp in unique_ids:
+            return False
+        else:
+            unique_ids.append(temp)
+    return True
+
+def US23(individuals):
+    unique_people = []
+    for item in individuals:
+        temp = item['name']+item['birth']
+        if temp in unique_people:
+            return False
+        else:
+            unique_people.append(temp)
+    return True
+
+def US21(family):
+    #returns true if husband is male and wife is female; else false
+    if family['husband']['Gender'] != 'M':
+        return False
+    if family['wife']['Gender'] != 'F':
+        return False
+    return True
+
+def US30(family):
+    #MARRIAGE AND DIV NEED TO BE SWITCHED
+    if family['stuff']['marriage']!='N/A':
+        return False
+    if len(family['stuff']['divorce'])==0:
+        return False
+    if family['wife']['Alive']=='False':
+        return False
+    if family['husband']['Alive']=='False':
+        return False
+    return True
+
+def US38(birthday):
+    if birthday=="Unknown":
+        return False
+    birth = birthday.split("-")
+    birth[2]="2018"
+    birthdate = get_dt_obj("-".join(birth))
+    today = datetime.datetime.today()
+    date_today = datetime.datetime(2018, today.month, today.day)
+
+    time_between_insertion = birthdate - date_today
+
+    if  time_between_insertion.days>30 or time_between_insertion.days<0:
+        return False
+    print(time_between_insertion)
+    return True
+
+def US39(marriage):
+    if len(marriage)==0:
+        return False
+    birth = marriage.split("-")
+    birth[2]="2018"
+    birthdate = get_dt_obj("-".join(birth))
+    today = datetime.datetime.today()
+    date_today = datetime.datetime(2018, today.month, today.day)
+
+    time_between_insertion = birthdate - date_today
+
+    if  time_between_insertion.days>30 or time_between_insertion.days<0:
+        return False
+    print(time_between_insertion)
+    return True
