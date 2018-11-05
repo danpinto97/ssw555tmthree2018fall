@@ -192,14 +192,26 @@ def US06(div, death1, death2):
     Returns:
         True/False: True if the divorce comes before death, False if not.
     '''
-    if div is None:
+    death1 = get_dt_obj(death1)
+    death2 = get_dt_obj(death2)
+    div = get_dt_obj(div)
+    if div is False:
         return False
-    if death1 is None:
+    if death1 is False and death2 is False:
         return False
-    if death2 is None:
-        return False
-    if div < death1 and div < death2:
-        return True
+
+    elif (type(death1) is not bool) and (type(death2) is bool):
+        print(div, death1, death2)
+        if div > death1:
+            return True
+    elif (type(death1) is bool) and (type(death2) is not bool):
+        print(div, death1, death2)
+        if div > death2:
+            return True
+    else:
+        print(div, death1, death2)
+        if div > death1 or div > death2:
+            return True
     return False
 
 
@@ -468,9 +480,9 @@ def US21(family):
 
 def US30(family):
     #MARRIAGE AND DIV NEED TO BE SWITCHED
-    if family['stuff']['marriage']!='N/A':
+    if family['stuff']['divorce']!='N/A':
         return False
-    if len(family['stuff']['divorce'])==0:
+    if len(family['stuff']['marriage'])==0:
         return False
     if family['wife']['Alive']=='False':
         return False

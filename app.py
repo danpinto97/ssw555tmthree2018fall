@@ -287,7 +287,7 @@ def main():
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
         {'$project': {
-            'dates': {'divorce': '$Married', 'marriage': '$Divorced'}}}
+            'dates': {'divorce': '$Divorced', 'marriage': '$Married'}}}
     ]):
         if US10(item['_id']) is False:
             print('ERROR: US10 ', item['_id'], 'marriage occurs before the age of 14 for wife or husband!')
@@ -297,7 +297,7 @@ def main():
 
     for item in db.fams.aggregate([
         {'$match': {'Married': {'$exists': True}, 'Divorced': {'$exists': True}}},
-        {'$project' : {'stuff': {'divorce': '$Married', 'marriage': '$Divorced', 'husband_id' : '$Husband ID', 'wife_id' : '$Wife ID', 'children': '$Children'}}},
+        {'$project' : {'stuff': {'divorce': '$Divorced', 'marriage': '$Married', 'husband_id' : '$Husband ID', 'wife_id' : '$Wife ID', 'children': '$Children'}}},
         {'$lookup' :
              {
                  'from' : 'indis',
@@ -315,13 +315,12 @@ def main():
             }},
         {'$unwind': '$wife'}
     ]):
-
         if US02(item['husband']['Birthday'],item['stuff']['marriage']) is False:
-            print('ERROR: US02 Husband', item['husband']['_id'], 'occurs after marriage!')
+            print('ERROR: US02 Husband', item['husband']['_id'], 'birth occurs after marriage!')
         if US02(item['wife']['Birthday'],item['stuff']['marriage']) is False:
             print('ERROR: US02 Wife', item['wife']['_id'] ,'birth occurs after marriage!')
-        if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']) is False:
-            print('ERROR: US06', item['_id'], 'Death of a spouse occurs before marriage date for family!')
+        if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']):
+            print('ERROR: US06', item['_id'], 'Death of a spouse occurs before divorce date for family!')
         wife_death = get_dt_obj_v2(item['wife']['Death'])
         husb_death = get_dt_obj_v2(item['husband']['Death'])
         children = item['stuff']['children'].split()
@@ -330,7 +329,7 @@ def main():
         if US30(item) == True:
             living_married.add(item['husband']['_id'])
             living_married.add(item['wife']['_id'])
-        if US39(item['stuff']['divorce']):
+        if US39(item['stuff']['marriage']):
             upcoming_anniversies.append(item['_id'])
 
         for child in children:
