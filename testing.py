@@ -492,10 +492,10 @@ class TestUS21(unittest.TestCase):
         self.assertEqual(US21(fam), False)
 class TestUS30(unittest.TestCase):
     def test_living_married(self):
-        fam = {'stuff': {'marriage': 'N/A', 'divorce': '01 JAN 1990'}, 'wife': {'Alive': 'True'}, 'husband': {'Alive': 'True'}}
+        fam = {'stuff': {'divorce': 'N/A', 'marriage': '01 JAN 1990'}, 'wife': {'Alive': 'True'}, 'husband': {'Alive': 'True'}}
         self.assertEqual(US30(fam), True)
     def test_not_living_married(self):
-        fam = {'stuff': {'marriage': 'N/A', 'divorce': '01 JAN 1990'}, 'wife': {'Alive': 'False'}, 'husband': {'Alive': 'True'}}
+        fam = {'stuff': {'divorce': 'N/A', 'marriage': '01 JAN 1990'}, 'wife': {'Alive': 'False'}, 'husband': {'Alive': 'True'}}
         self.assertEqual(US30(fam), False)
 if __name__ == '__main__':
     unittest.main()
