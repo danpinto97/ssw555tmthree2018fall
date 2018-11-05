@@ -184,16 +184,10 @@ class TestUS06(unittest.TestCase):
         self.assertEqual(US06(None, test, None), False)
         return
     def test_proper(self):
-        div = datetime.datetime(1920, 8, 4, 0, 0)
-        death1 = datetime.datetime(2001, 9, 15, 0, 0)
-        death2 = datetime.datetime(2001, 9, 17, 0, 0)
-        self.assertEqual(US06(div, death1, death2), True)
+        self.assertEqual(US06('8-JUN-1920', '5-MAR-2001', '7-AUG-2001'), False)
         return
     def test_improper(self):
-        div = datetime.datetime(1920, 8, 4, 0, 0)
-        death1 = datetime.datetime(2001, 9, 15, 0, 0)
-        death2 = datetime.datetime(2001, 9, 17, 0, 0)
-        self.assertEqual(US06(death1, div, death2), False)
+        self.assertEqual(US06('5-MAR-2001', '8-JUN-1920', '7-AUG-2001'), True)
         return
 
 

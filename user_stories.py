@@ -201,16 +201,13 @@ def US06(div, death1, death2):
         return False
 
     elif (type(death1) is not bool) and (type(death2) is bool):
-        print(div, death1, death2)
         if div > death1:
             return True
     elif (type(death1) is bool) and (type(death2) is not bool):
-        print(div, death1, death2)
         if div > death2:
             return True
     else:
-        print(div, death1, death2)
-        if div > death1 or div > death2:
+        if (div > death1) or (div > death2):
             return True
     return False
 
