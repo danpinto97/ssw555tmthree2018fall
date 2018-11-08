@@ -497,5 +497,17 @@ class TestUS30(unittest.TestCase):
     def test_not_living_married(self):
         fam = {'stuff': {'divorce': 'N/A', 'marriage': '01 JAN 1990'}, 'wife': {'Alive': 'False'}, 'husband': {'Alive': 'True'}}
         self.assertEqual(US30(fam), False)
+
+class TestUS18(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(US18(db.indis.find_one()), True)
+    def test2(self):
+        self.assertEqual(US18(db.indis.find_one()), True)
+class TestUS34(unittest.TestCase):
+
+    def test1(self):
+        self.assertEqual(US34(), ['@F1@', '@F2@', '@F3@'])
+
+
 if __name__ == '__main__':
     unittest.main()
