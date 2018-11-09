@@ -570,5 +570,7 @@ def US34():
 
     return large_age_difference
 
-
-
+def US15(children):
+    if len(children.split(' ')) > 15:
+        return True
+    return False

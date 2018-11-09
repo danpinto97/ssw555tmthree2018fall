@@ -324,6 +324,8 @@ def main():
         wife_death = get_dt_obj_v2(item['wife']['Death'])
         husb_death = get_dt_obj_v2(item['husband']['Death'])
         children = item['stuff']['children'].split()
+        if US15(item['stuff']['children']):
+            print("ERROR: US15 Family " + item['_id'] + " contains more than 15 siblings")
         if US21(item) == False:
             print("ERROR: US21 Incorrect gender roles in family: "+item['_id'])
         if US30(item) == True:
@@ -364,5 +366,7 @@ def main():
     for individual in db.indis.find():
         if not US18(individual['_id']):
             print('Error US18:', individual['_id'], 'Siblings should not marry one another')
+
+
 if __name__ == '__main__':
     main()
