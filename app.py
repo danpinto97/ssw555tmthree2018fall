@@ -342,6 +342,10 @@ def main():
                         pass
                     else:
                         print('ERROR: US09: ', child, " born after parents.")
+        if len(US33(item)) > 0:
+            print("US33: All orphans for family " + item['_id'] + " are "+ US33(item))
+
+
     if len(births_in_last_30) > 0:
         print("US35: Recent birth ids: ", births_in_last_30)
     for family in db.fams.find({}):
