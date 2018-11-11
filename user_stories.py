@@ -500,7 +500,6 @@ def US38(birthday):
 
     if  time_between_insertion.days>30 or time_between_insertion.days<0:
         return False
-    print(time_between_insertion)
     return True
 
 def US39(marriage):
@@ -516,5 +515,27 @@ def US39(marriage):
 
     if  time_between_insertion.days>30 or time_between_insertion.days<0:
         return False
-    print(time_between_insertion)
+    return True
+
+def US31(age, spouse):
+    age = int(age)
+    if age<31:
+        return False
+    if len(spouse)>0:
+        return False
+    return True
+def US24(spouses):
+    unique = []
+    for spouse in spouses:
+        if spouse in unique:
+            return False
+        unique.append(spouse)
+    return True
+def US16(males):
+    if len(males)==1:
+        return True
+    last = males[0]
+    for i in range(1, len(males)):
+        if last!=males[i]:
+            return False
     return True

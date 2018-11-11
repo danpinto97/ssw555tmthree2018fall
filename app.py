@@ -132,11 +132,13 @@ def main():
                             }
                             try:
                                 if len(spl) == 3:
-                                    date=spl[2]
+                                    date="01-01-"+spl[2]
                                     dt = datetime.datetime(year=int(spl[2]), month=1, day=1)
+                                    print("US41: Partial Date "+spl[2]+" placed into file as 01-01-"+spl[2])
                                 if len(spl) == 4:
-                                    date=spl[2] + "-" + spl[3]
+                                    date="01-"+spl[2] + "-" + spl[3]
                                     dt = datetime.datetime(year=int(spl[3]), month=date_int[spl[2]], day=1)
+                                    print("US41: Partial Date "+spl[2]+" "+spl[3]+" placed into file as 01-"+spl[2]+"-"+spl[3])
                                 if len(spl) == 5:
                                     date=spl[2] + "-" + spl[3] + "-" + spl[4]
                                     dt = datetime.datetime(year=int(spl[4]), month=date_int[spl[3]], day=int(spl[2]))
@@ -241,11 +243,12 @@ def main():
     living_married = set([])
     upcoming_births = []
     upcoming_anniversies = []
+    unique_spouses = []
     for item in db.indis.aggregate([
         {'$match': {'Birthday': {'$exists': True}, 'Death' : {'$exists': True}}},
         {'$project' : {
             'dates':{'birth':'$Birthday', 'death': '$Death', 'alive' : '$Alive'},
-            'name': '$Name', 'gender': '$Gender', 'spouse': '$Spouse'}}
+            'name': '$Name', 'gender': '$Gender', 'spouse': '$Spouse', 'age': '$Age'}}
     ]):
         if US07(item['dates']['birth'],item['dates']['death']):
             print('ERROR: US07 ', item['_id'], 'older than 150 years!')
@@ -269,6 +272,8 @@ def main():
 
         if US38(item['dates']['birth']):
             upcoming_births.append(item['_id'])
+        if US31(item['age'], item['spouse']):
+            print("ERROR: US31: Living single over 30 years old: "+item['_id'])
 
 
 
@@ -331,7 +336,11 @@ def main():
             living_married.add(item['wife']['_id'])
         if US39(item['stuff']['marriage']):
             upcoming_anniversies.append(item['_id'])
-
+        US24_test = item['husband']['Name']+item['stuff']['marriage']
+        if US24_test in unique_spouses:
+            print("ERROR: US24 Duplicate Family with spouse and marriage date: "+item['_id'])
+        else:
+            unique_spouses.append(US24_test)
         for child in children:
             if '@' in child:
                 if US42(birth_dates[child]):
@@ -340,6 +349,15 @@ def main():
                         pass
                     else:
                         print('ERROR: US09: ', child, " born after parents.")
+        spouse_last = item['husband']['Name'].split("/")
+        if children!=["N", "/", "A"]:
+            for child in children:
+                if child in indis:
+                    child = indis[child]
+                    name = child.getName().split("/")
+                    if name != spouse_last:
+                        print("ERROR: US16: All male last names don't match: "+item['_id'])
+                        break
     if len(births_in_last_30) > 0:
         print("US35: Recent birth ids: ", births_in_last_30)
     for family in db.fams.find({}):

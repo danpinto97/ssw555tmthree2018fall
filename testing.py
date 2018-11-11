@@ -497,5 +497,34 @@ class TestUS30(unittest.TestCase):
     def test_not_living_married(self):
         fam = {'stuff': {'divorce': 'N/A', 'marriage': '01 JAN 1990'}, 'wife': {'Alive': 'False'}, 'husband': {'Alive': 'True'}}
         self.assertEqual(US30(fam), False)
+class TestUS41(unittest.TestCase):
+    def test_partial_Date(self):
+        date = "2017"
+        spl = date.split()
+        if len(spl)==3: #full date, no change
+            pass
+        if len(spl)==2:
+            date ="01 "+date #missing day param
+        else:
+            date="01 01 "+date #missing day and month, default to Jan 01
+        self.assertAlmostEqual(len(date.split()), 3)
+    def test_full_date(self):
+        date = "06 APR 2013"
+        self.assertAlmostEqual(len(date.split()), 3)
+class TestUS31(unittest.TestCase):
+    def test_living_single(self):
+        self.assertEqual(US31(37, []), True)
+    def test_not(self):
+        self.assertEqual(US31(43, [1, 2]), False)
+class TestUS24(unittest.TestCase):
+    def test_all_unique(self):
+        self.assertEqual(US24(["jimmy", "bob", "applecity"]), True)
+    def test_not_unique(self):
+        self.assertEqual(US24(["applecity", "johnny", "lemme", "johnny"]), False)
+class TestUS16(unittest.TestCase):
+    def test_all_same(self):
+        self.assertEqual(US16(["Smith", "Smith", "Smith"]), True)
+    def test_diff(self):
+        self.assertEqual(US16(["bimbolokadakos", "lmao"]), False)
 if __name__ == '__main__':
     unittest.main()
