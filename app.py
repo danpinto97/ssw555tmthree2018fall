@@ -326,6 +326,8 @@ def main():
             print('ERROR: US02 Wife', item['wife']['_id'] ,'birth occurs after marriage!')
         if US06(item['stuff']['divorce'], item['wife']['Death'], item['husband']['Death']):
             print('ERROR: US06', item['_id'], 'Death of a spouse occurs before divorce date for family!')
+        if US15(item['stuff']['children']):
+            print("ERROR: US15 Family " + item['_id'] + " contains 15 or more siblings")
         wife_death = get_dt_obj_v2(item['wife']['Death'])
         husb_death = get_dt_obj_v2(item['husband']['Death'])
         children = item['stuff']['children'].split()

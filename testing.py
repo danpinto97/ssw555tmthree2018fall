@@ -413,7 +413,7 @@ class TestUS14(unittest.TestCase):
 
 class TestUS25(unittest.TestCase):
     def test_fam_with_duplicate(self):
-        self.assertEqual(US25('@F17@'), True)
+        self.assertEqual(US25('@F18@'), True)
     def test_fam_no_duplicates(self):
         self.assertEqual(US25('@F4@'), False)
 
@@ -534,7 +534,11 @@ class TestUS18(unittest.TestCase):
 """class TestUS34(unittest.TestCase):
     def test1(self):
         self.assertEqual(US34(), ['@F1@', '@F2@', '@F3@'])"""
-
+class TestUS15(unittest.TestCase):
+    def test_15_or_more(self):
+        self.assertEqual(US15('@I51@ @I52@ @I55@ @I56@ @I57@ @I58@ @I59@ @I60@ @I61@ @I62@ @I63@ @I64@ @I65@ @I66@ @I67@'), True)
+    def test_less_than_15(self):
+        self.assertEqual(US15('@I51@ @I52@ @I55@ @I56@ @I57@ @I58@ @I59@ @I60@ @I61@ @I62@ @I63@ @I64@ @I65@ @I66@'), False)
 
 if __name__ == '__main__':
     unittest.main()
