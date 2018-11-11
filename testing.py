@@ -540,5 +540,11 @@ class TestUS15(unittest.TestCase):
     def test_less_than_15(self):
         self.assertEqual(US15('@I51@ @I52@ @I55@ @I56@ @I57@ @I58@ @I59@ @I60@ @I61@ @I62@ @I63@ @I64@ @I65@ @I66@'), False)
 
+class TestUS33(unittest.TestCase):
+    def test_orphan(self):
+        self.assertEqual(len(US33({'_id': '@F20@', 'stuff': {'divorce': 'N/A', 'marriage': '', 'husband_id': '@I66@', 'wife_id': '@I68@', 'children': '@I69@'}, 'husband': {'_id': '@I66@', 'ID': '@I66@', 'Name': 'Burger/Smith/', 'Gender': 'M', 'Birthday': '8-MAR-1977', 'Age': '41', 'Alive': 'False', 'Death': '5-MAY-1990', 'Child': '@F18@', 'Spouse': '@F20@'}, 'wife': {'_id': '@I68@', 'ID': '@I68@', 'Name': 'BurgersWife/Smith/', 'Gender': 'F', 'Birthday': '3-FEB-1977', 'Age': '41', 'Alive': 'False', 'Death': '8-MAR-1991', 'Child': '', 'Spouse': '@F20@'}})), 1)
+    def test_non_orphan(self):
+        self.assertEqual(len(US33({'_id': '@F19@', 'stuff': {'divorce': 'N/A', 'marriage': '8-APR-1990', 'husband_id': '@I53@', 'wife_id': '@I54@', 'children': 'N / A'}, 'husband': {'_id': '@I53@', 'ID': '@I53@', 'Name': 'US18/Smith/', 'Gender': 'M', 'Birthday': '9-APR-1965', 'Age': '53', 'Alive': 'True', 'Death': 'N/A', 'Child': '@F5@', 'Spouse': '@F19@'}, 'wife': {'_id': '@I54@', 'ID': '@I54@', 'Name': 'US18(1)/Smith/', 'Gender': 'F', 'Birthday': '5-JUN-1970', 'Age': '48', 'Alive': 'True', 'Death': 'N/A', 'Child': '@F5@', 'Spouse': '@F19@'}})), 0)
+
 if __name__ == '__main__':
     unittest.main()

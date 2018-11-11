@@ -360,6 +360,10 @@ def main():
                     if name != spouse_last:
                         print("ERROR: US16: All male last names don't match: "+item['_id'])
                         break
+        if len(US33(item)) > 0:
+            print("US33: All orphans for family " + item['_id'] + " are " + str(US33(item)))
+
+
     if len(births_in_last_30) > 0:
         print("US35: Recent birth ids: ", births_in_last_30)
     for family in db.fams.find({}):

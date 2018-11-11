@@ -597,5 +597,16 @@ def US15(children):
         return True
     return False
 
-
+def US33(family):
+    orphan_list = []
+    if not ((family['husband']['Alive'] == 'False') and (family['wife']['Alive'] == 'False')):
+        return orphan_list
+    father_death = get_dt_obj(family['husband']['Death'])
+    mother_death = get_dt_obj(family['wife']['Death'])
+    #need to check from diff between child birth and parents death to see if child was younger than 18 when they died
+    for child_id in family['stuff']['children'].split(' '):
+        child_birth = get_dt_obj(db.indis.find_one({'_id': child_id})['Birthday'])
+        if (relativedelta(child_birth,father_death).years < 18) and (relativedelta(child_birth, mother_death).years < 18):
+            orphan_list.append(child_id)
+    return orphan_list
 
