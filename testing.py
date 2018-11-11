@@ -324,7 +324,7 @@ class TestUS05(unittest.TestCase):
 
 class TestUS08(unittest.TestCase):
     def test_false(self):
-        self.assertEqual(US08('@F9@'), False)
+        self.assertEqual(US08('@F10@'), False)
     def test_true(self):
         self.assertEqual(US08('@F4@'), True)
 
@@ -413,7 +413,7 @@ class TestUS14(unittest.TestCase):
 
 class TestUS25(unittest.TestCase):
     def test_fam_with_duplicate(self):
-        self.assertEqual(US25('@F16@'), True)
+        self.assertEqual(US25('@F17@'), True)
     def test_fam_no_duplicates(self):
         self.assertEqual(US25('@F4@'), False)
 
