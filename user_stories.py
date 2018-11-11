@@ -539,3 +539,58 @@ def US16(males):
         if last!=males[i]:
             return False
     return True
+    
+def US18(indi_id):
+    list_of_siblings = []
+    spouse_family = db.fams.find_one({ '$or': [{"wife ID": indi_id}, {"Husband ID": indi_id}]})
+    if spouse_family is None:
+        return True
+    for family in db.fams.find():
+        if family['Children'] is "N / A":
+            continue
+        for child in family['Children'].split(' '):
+            if child == indi_id:
+                for child in family['Children'].split(' '):
+                    if child != indi_id:
+                        list_of_siblings.append(child)
+    if len(list_of_siblings) == 0:
+        return True
+    for sibling in list_of_siblings:
+        if (sibling == spouse_family["Wife ID"]) or (sibling == spouse_family["Husband ID"]):
+            return False
+    return True
+
+def US34():
+
+    families = db.fams.find()
+    if families is None:
+        return
+    large_age_difference = []
+    for family in families:
+        if (family['Husband ID'] == None) or (family['Husband ID'] == 'N/A') or (family['Wife ID'] == None) or (family['Wife ID'] == 'N/A'):
+            continue
+        wife = db.indis.find_one({'_id': family['Wife ID']})
+        husband = db.indis.find_one({'_id': family['Husband ID']})
+        if wife is None or husband is None:
+            continue
+        if (type(get_dt_obj(wife['Birthday'])) is bool) or (type(get_dt_obj(husband['Birthday'])) is bool):
+            continue
+        wife_age = datetime.datetime.now() - get_dt_obj(wife['Birthday'])
+        husband_age = datetime.datetime.now() - get_dt_obj(husband['Birthday'])
+
+
+        if (wife_age * 2) <  husband_age:
+            large_age_difference.append(family['_id'])
+            continue
+        if (husband_age * 2) < wife_age:
+            large_age_difference.append(family['_id'])
+            continue
+    if len(large_age_difference) > 0:
+        print('US34: List all couples who were married when the older spouse was more than twice as old as the younger spouse \n')
+        for family in large_age_difference:
+            print(family, '\n')
+
+    return large_age_difference
+
+
+

@@ -1,6 +1,5 @@
 import unittest
 import app
-import user_stories
 import datetime
 from user_stories import *
 db = client()
@@ -73,27 +72,27 @@ class TestUS11(unittest.TestCase):
 
     def test_person1(self):
         person1_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US11(person1_id), True)
+        self.assertEqual(US11(person1_id), True)
         return
 
     def test_person2(self):
         person2_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US11(person2_id), True)
+        self.assertEqual(US11(person2_id), True)
         return
 
     def test_person3(self):
         person3_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US11(person3_id), True)
+        self.assertEqual(US11(person3_id), True)
         return
 
     def test_person4(self):
         person4_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US11(person4_id), True)
+        self.assertEqual(US11(person4_id), True)
         return
 
     def test_person5(self):
         person5_id = db.indis.find_one({})["_id"]
-        self.assertEqual(user_stories.US11(person5_id), True)
+        self.assertEqual(US11(person5_id), True)
         return
 
 class TestUS36(unittest.TestCase):
@@ -526,5 +525,16 @@ class TestUS16(unittest.TestCase):
         self.assertEqual(US16(["Smith", "Smith", "Smith"]), True)
     def test_diff(self):
         self.assertEqual(US16(["bimbolokadakos", "lmao"]), False)
+
+class TestUS18(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(US18(db.indis.find_one()), True)
+    def test2(self):
+        self.assertEqual(US18(db.indis.find_one()), True)
+"""class TestUS34(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(US34(), ['@F1@', '@F2@', '@F3@'])"""
+
+
 if __name__ == '__main__':
     unittest.main()

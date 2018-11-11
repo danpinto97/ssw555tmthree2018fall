@@ -377,5 +377,10 @@ def main():
         print("US39: Anniverseries coming up within next 30 days: ", upcoming_anniversies)
     if len(upcoming_births)>0:
         print("US38: Birthdays coming up within next 30 days: ", upcoming_births)
+
+    US34()
+    for individual in db.indis.find():
+        if not US18(individual['_id']):
+            print('Error US18:', individual['_id'], 'Siblings should not marry one another')
 if __name__ == '__main__':
     main()
